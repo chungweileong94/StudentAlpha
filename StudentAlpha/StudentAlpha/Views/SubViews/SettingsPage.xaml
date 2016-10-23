@@ -13,7 +13,25 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <CommandBar Grid.RowSpan="2" Style="{StaticResource CommandBarStyle}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="CommandBarVisualStateGroup">
+                <VisualState x:Name="LargeWidth">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720"/>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="SmallWidth">
+                    <VisualState.Setters>
+                        <Setter Target="TopCommandBar.(UIElement.Margin)" Value="48,0,0,0"/>
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <CommandBar x:Name="TopCommandBar" Grid.RowSpan="2" Style="{StaticResource CommandBarStyle}">
             <CommandBar.Content>
                 <Grid Height="48">
                     <TextBlock 

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -21,6 +22,30 @@ namespace StudentAlpha.Views
         public MainPage()
         {
             this.InitializeComponent();
+
+            MainFrame.Navigated += (s, e) =>
+            {
+                var sender = s as Frame;
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = sender.CanGoBack ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
+
+                foreach (var rb in allRadioButtons(this))
+                {
+                    if (MainFrame.SourcePageType.Name == $"{rb.Content}Page")
+                    {
+                        rb.IsChecked = true;
+                        return;
+                    }
+                }
+            };
+
+            SystemNavigationManager.GetForCurrentView().BackRequested += (s, e) =>
+            {
+                if (MainFrame.CanGoBack)
+                {
+                    e.Handled = true;
+                    MainFrame.GoBack();
+                }
+            };
         }
 
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
@@ -50,6 +75,26 @@ namespace StudentAlpha.Views
                     MainFrame.Navigate(typeof(SettingsPage));
                     break;
             }
+        }
+
+        private List<RadioButton> allRadioButtons(DependencyObject parent)
+        {
+            var list = new List<RadioButton>();
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+
+                if (child is RadioButton)
+                {
+                    list.Add(child as RadioButton);
+                    continue;
+                }
+
+                list.AddRange(allRadioButtons(child));
+            }
+            return list;
+
         }
     }
 }
