@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StudentAlpha.Views.SubViews;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +26,30 @@ namespace StudentAlpha.Views
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
         {
             MainSplitView.IsPaneOpen = !MainSplitView.IsPaneOpen;
+        }
+
+        private void NavButton_Click(object sender, RoutedEventArgs e)
+        {
+            var s = sender as RadioButton;
+
+            switch (s.Content.ToString())
+            {
+                case "Home":
+                    MainFrame.Navigate(typeof(HomePage));
+                    break;
+                case "Timetable":
+                    MainFrame.Navigate(typeof(TimetablePage));
+                    break;
+                case "Assignments":
+                    MainFrame.Navigate(typeof(AssignmentsPage));
+                    break;
+                case "Events":
+                    MainFrame.Navigate(typeof(EventsPage));
+                    break;
+                case "Settings":
+                    MainFrame.Navigate(typeof(SettingsPage));
+                    break;
+            }
         }
     }
 }
