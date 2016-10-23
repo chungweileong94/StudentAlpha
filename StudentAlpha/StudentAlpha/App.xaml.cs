@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using StudentAlpha.Views;
+using Windows.UI;
 
 namespace StudentAlpha
 {
@@ -77,6 +78,8 @@ namespace StudentAlpha
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
+
+                setupWindowBarColor();
             }
         }
 
@@ -102,6 +105,15 @@ namespace StudentAlpha
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        private void setupWindowBarColor()
+        {
+            var view = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
+            view.TitleBar.BackgroundColor = (Color)Resources["SystemAccentColor"];
+            view.TitleBar.ButtonBackgroundColor = (Color)Resources["SystemAccentColor"];
+            view.TitleBar.ForegroundColor = Colors.White;
+            view.TitleBar.ButtonForegroundColor = Colors.White;
         }
     }
 }
