@@ -15,36 +15,43 @@
             PaneBackground="Black"
             Margin="0,48,0,0">
             <SplitView.Pane>
-                <RelativePanel>
-                    <StackPanel RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
-                        <RadioButton 
-                            Content="Home"
-                            Tag="&#xE80F;" 
-                            IsChecked="True"
-                            GroupName="Nav"
-                            Style="{StaticResource NavRadioButtonStyle}"
-                            Click="NavButton_Click"/>
-                        <RadioButton 
-                            Content="Timetable"
-                            Tag="&#xE8BF;" 
-                            GroupName="Nav"
-                            Style="{StaticResource NavRadioButtonStyle}"
-                            Click="NavButton_Click"/>
-                        <RadioButton 
-                            Content="Events"
-                            Tag="&#xE787;" 
-                            GroupName="Nav"
-                            Style="{StaticResource NavRadioButtonStyle}"
-                            Click="NavButton_Click"/>
-                        <RadioButton 
-                            Content="Assignments"
-                            Tag="&#xE8F1;" 
-                            GroupName="Nav"
-                            Style="{StaticResource NavRadioButtonStyle}"
-                            Click="NavButton_Click"/>
-                    </StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
 
-                    <StackPanel RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignLeftWithPanel="True">
+                    <ScrollViewer HorizontalScrollMode="Disabled" VerticalScrollBarVisibility="Hidden">
+                        <StackPanel>
+                            <RadioButton 
+                                Content="Home"
+                                Tag="&#xE80F;" 
+                                IsChecked="True"
+                                GroupName="Nav"
+                                Style="{StaticResource NavRadioButtonStyle}"
+                                Click="NavButton_Click"/>
+                            <RadioButton 
+                                Content="Timetable"
+                                Tag="&#xE8BF;" 
+                                GroupName="Nav"
+                                Style="{StaticResource NavRadioButtonStyle}"
+                                Click="NavButton_Click"/>
+                            <RadioButton 
+                                Content="Events"
+                                Tag="&#xE787;" 
+                                GroupName="Nav"
+                                Style="{StaticResource NavRadioButtonStyle}"
+                                Click="NavButton_Click"/>
+                            <RadioButton 
+                                Content="Assignments"
+                                Tag="&#xE8F1;" 
+                                GroupName="Nav"
+                                Style="{StaticResource NavRadioButtonStyle}"
+                                Click="NavButton_Click"/>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <StackPanel Grid.Row="1">
                         <Border Height="1" BorderThickness="0" HorizontalAlignment="Stretch" Opacity=".2" Background="White"/>
                         <ListViewItem Height="48" Padding="0" Margin="0" Foreground="White" HorizontalAlignment="Stretch" Style="{StaticResource NavListViewItemStyle}">
                             <StackPanel Orientation="Horizontal">
@@ -59,7 +66,7 @@
                             Style="{StaticResource NavRadioButtonStyle}"
                             Click="NavButton_Click"/>
                     </StackPanel>
-                </RelativePanel>
+                </Grid>
             </SplitView.Pane>
             <SplitView.Content>
                 <Frame x:Name="MainFrame" Margin="0,-48,0,0" SourcePageType="sv:HomePage"/>

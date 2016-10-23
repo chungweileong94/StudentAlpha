@@ -13,13 +13,12 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <CommandBar Background="{ThemeResource SystemAccentColor}">
+        <CommandBar Grid.RowSpan="2" Style="{StaticResource CommandBarStyle}">
             <CommandBar.Content>
                 <Grid Height="48">
                     <TextBlock 
                         Text="Settings"
                         FontWeight="Bold"
-                        Foreground="White"
                         FontSize="16"
                         Margin="16,0"
                         VerticalAlignment="Center"/>

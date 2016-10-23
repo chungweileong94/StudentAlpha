@@ -100,5 +100,9 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="CommandBarStyle" TargetType="CommandBar">
+            <Setter Property="RequestedTheme" Value="Dark"/>
+            <Setter Property="Background" Value="{ThemeResource SystemAccentColor}"/>
+        </Style>
     </Application.Resources>
 </Application>
