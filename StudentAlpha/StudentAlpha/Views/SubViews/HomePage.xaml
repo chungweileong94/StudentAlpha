@@ -7,6 +7,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <Style x:Key="PanelGridStyle" TargetType="Grid">
+            <Setter Property="Margin" Value="12"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Height" Value="300"/>
+            <Setter Property="Background" Value="LightGray"/>
+            <Setter Property="RequestedTheme" Value="Light"/>
+        </Style>
+    </Page.Resources>
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="48"/>
@@ -29,6 +39,35 @@
                     </VisualState.StateTriggers>
                 </VisualState>
             </VisualStateGroup>
+            <VisualStateGroup x:Name="ContentVisualStateGroup">
+                <VisualState x:Name="LargeContentWidth">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="880"/>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="MediumContentWidth">
+                    <VisualState.Setters>
+                        <Setter Target="TimetableGrid.(FrameworkElement.Width)" Value="300"/>
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="800"/>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="SmallContentWidth">
+                    <VisualState.Setters>
+                        <Setter Target="TimetableGrid.(RelativePanel.AlignRightWithPanel)" Value="true"/>
+                        <Setter Target="EventsGrid.(RelativePanel.RightOf)" Value=""/>
+                        <Setter Target="EventsGrid.(RelativePanel.Below)" Value="TimetableGrid"/>
+                        <Setter Target="EventsGrid.(RelativePanel.AlignTopWithPanel)" Value="False"/>
+                        <Setter Target="EventsGrid.(RelativePanel.AlignLeftWithPanel)" Value="True"/>
+                        <Setter Target="AssignmentsGrid.(RelativePanel.Below)" Value="EventsGrid"/>
+                        <Setter Target="TimetableGrid.(FrameworkElement.Width)" Value="NaN"/>
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
         <CommandBar x:Name="TopCommandBar" Grid.RowSpan="2" Style="{StaticResource CommandBarStyle}">
@@ -45,5 +84,45 @@
 
             <AppBarButton Icon="Refresh" Label="Refresh"/>
         </CommandBar>
+
+        <!--Content-->
+        <ScrollViewer Grid.Row="1">
+            <RelativePanel Margin="12">
+                <Grid x:Name="TimetableGrid" Width="400" Style="{StaticResource PanelGridStyle}" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Timetable" Foreground="{ThemeResource SystemAccentColor}" Style="{ThemeResource TitleTextBlockStyle}"/>
+                    <ListView Grid.Row="1">
+                        <!--Sample data-->
+                        <ListViewItem Padding="8">
+                            <StackPanel>
+                                <TextBlock Text="9:00 AM" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                <TextBlock Text="Subject A" Opacity=".7" Style="{ThemeResource BodyTextBlockStyle}"/>
+                            </StackPanel>
+                        </ListViewItem>
+                        <ListViewItem Padding="8">
+                            <StackPanel>
+                                <TextBlock Text="1:00 PM" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                <TextBlock Text="Subject B" Opacity=".7" Style="{ThemeResource BodyTextBlockStyle}"/>
+                            </StackPanel>
+                        </ListViewItem>
+                        <ListViewItem Padding="8">
+                            <StackPanel>
+                                <TextBlock Text="3:00 PM" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                <TextBlock Text="Subject C" Opacity=".7" Style="{ThemeResource BodyTextBlockStyle}"/>
+                            </StackPanel>
+                        </ListViewItem>
+                    </ListView>
+                </Grid>
+                <Grid x:Name="EventsGrid" Style="{StaticResource PanelGridStyle}" RelativePanel.RightOf="TimetableGrid" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
+                    <TextBlock Text="Events" Foreground="{ThemeResource SystemAccentColor}" Style="{ThemeResource TitleTextBlockStyle}"/>
+                </Grid>
+                <Grid x:Name="AssignmentsGrid" Style="{StaticResource PanelGridStyle}" RelativePanel.Below="TimetableGrid" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                    <TextBlock Text="Assignments" Foreground="{ThemeResource SystemAccentColor}" Style="{ThemeResource TitleTextBlockStyle}"/>
+                </Grid>
+            </RelativePanel>
+        </ScrollViewer>
     </Grid>
 </Page>
