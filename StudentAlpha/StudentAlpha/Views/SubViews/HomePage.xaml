@@ -103,27 +103,36 @@
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="9:00 AM" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                                        <TextBlock Text="~ 11:00 AM" Style="{ThemeResource BodyTextBlockStyle}" Opacity=".7" Margin="4,0,0,0" VerticalAlignment="Bottom"/>
+                                        <TextBlock Opacity=".7" VerticalAlignment="Bottom">
+                                            <Run Text=" - "/>
+                                            <Run Text="11:00 AM"/>
+                                        </TextBlock>
                                     </StackPanel>
-                                    <TextBlock Text="Subject A" Opacity=".7" Style="{ThemeResource BodyTextBlockStyle}"/>
+                                    <TextBlock Text="Subject A" Opacity=".7"/>
                                 </StackPanel>
                             </ListViewItem>
                             <ListViewItem Padding="8">
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="1:00 PM" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                                        <TextBlock Text="~ 2:00 PM" Style="{ThemeResource BodyTextBlockStyle}" Opacity=".7" Margin="4,0,0,0" VerticalAlignment="Bottom"/>
+                                        <TextBlock Opacity=".7" VerticalAlignment="Bottom">
+                                            <Run Text=" - "/>
+                                            <Run Text="2:00 PM"/>
+                                        </TextBlock>
                                     </StackPanel>
-                                    <TextBlock Text="Subject B" Opacity=".7" Style="{ThemeResource BodyTextBlockStyle}"/>
+                                    <TextBlock Text="Subject B" Opacity=".7"/>
                                 </StackPanel>
                             </ListViewItem>
                             <ListViewItem Padding="8">
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="3:00 PM" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                                        <TextBlock Text="~ 5:00 PM" Style="{ThemeResource BodyTextBlockStyle}" Opacity=".7" Margin="4,0,0,0" VerticalAlignment="Bottom"/>
+                                        <TextBlock Opacity=".7" VerticalAlignment="Bottom">
+                                            <Run Text=" - "/>
+                                            <Run Text="5:00 PM"/>
+                                        </TextBlock>
                                     </StackPanel>
-                                    <TextBlock Text="Subject C" Opacity=".7" Style="{ThemeResource BodyTextBlockStyle}"/>
+                                    <TextBlock Text="Subject C" Opacity=".7"/>
                                 </StackPanel>
                             </ListViewItem>
                         </ListView>
@@ -136,16 +145,83 @@
                         <TextBlock Text="Events" Foreground="{ThemeResource SystemAccentColor}" Style="{ThemeResource TitleTextBlockStyle}"/>
 
                         <GridView Grid.Row="1">
-                            <GridViewItem>
-                                <StackPanel>
-                                    <TextBlock Text="Event Title" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-
+                            <GridViewItem Width="200" HorizontalContentAlignment="Left" Padding="0,0,0,12">
+                                <StackPanel Margin="8">
+                                    <TextBlock Text="Event Title 1" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                    <TextBlock Opacity=".7">
+                                        <Run Text="9:00 AM"/>
+                                        <Run Text=" - "/>
+                                        <Run Text="11:00 AM"/>
+                                    </TextBlock>
+                                    <TextBlock Text="Location" Foreground="{ThemeResource SystemAccentColor}" Opacity=".7" Margin="0,8,0,0"/>
+                                </StackPanel>
+                            </GridViewItem>
+                            <GridViewItem Width="200" HorizontalContentAlignment="Left" Padding="0,0,0,12">
+                                <StackPanel Margin="8">
+                                    <TextBlock Text="Event Title 2" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                    <TextBlock Opacity=".7">
+                                        <Run Text="9:00 AM"/>
+                                        <Run Text=" - "/>
+                                        <Run Text="11:00 AM"/>
+                                    </TextBlock>
+                                    <TextBlock Text="Location" Foreground="{ThemeResource SystemAccentColor}" Opacity=".7" Margin="0,8,0,0"/>
+                                </StackPanel>
+                            </GridViewItem>
+                            <GridViewItem Width="200" HorizontalContentAlignment="Left" Padding="0,0,0,12">
+                                <StackPanel Margin="8">
+                                    <TextBlock Text="Event Title 3" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                    <TextBlock Opacity=".7">
+                                        <Run Text="9:00 AM"/>
+                                        <Run Text=" - "/>
+                                        <Run Text="11:00 AM"/>
+                                    </TextBlock>
+                                    <TextBlock Text="Location" Foreground="{ThemeResource SystemAccentColor}" Opacity=".7" Margin="0,8,0,0"/>
                                 </StackPanel>
                             </GridViewItem>
                         </GridView>
                     </Grid>
-                    <Grid x:Name="AssignmentsGrid" Style="{StaticResource PanelGridStyle}" RelativePanel.Below="TimetableGrid" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                    <Grid x:Name="AssignmentsGrid" Style="{StaticResource PanelGridStyle}" Height="auto" MinHeight="300" RelativePanel.Below="TimetableGrid" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
                         <TextBlock Text="Assignments" Foreground="{ThemeResource SystemAccentColor}" Style="{ThemeResource TitleTextBlockStyle}"/>
+
+                        <GridView Grid.Row="1">
+                            <GridViewItem Width="400" HorizontalContentAlignment="Left" Padding="0,0,0,12">
+                                <StackPanel Margin="8">
+                                    <TextBlock Text="Assignemtn Title 1" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                    <TextBlock Opacity=".7">
+                                        <Run Text="Due Date: " Foreground="{ThemeResource SystemAccentColor}"/>
+                                        <Run Text="5 Nov 2016"/>
+                                    </TextBlock>
+                                    <TextBlock Text="Subject" Foreground="{ThemeResource SystemAccentColor}" FontSize="16" Opacity=".7" Margin="0,8,0,0"/>
+                                    <TextBlock Text="Description Summary.......blablalbalba blablalbalba blablalbalba blablalbalba...." TextWrapping="WrapWholeWords" Opacity=".7"/>
+                                </StackPanel>
+                            </GridViewItem>
+                            <GridViewItem Width="400" HorizontalContentAlignment="Left" Padding="0,0,0,12">
+                                <StackPanel Margin="8">
+                                    <TextBlock Text="Assignemtn Title 2" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                    <TextBlock Opacity=".7">
+                                        <Run Text="Due Date: " Foreground="{ThemeResource SystemAccentColor}"/>
+                                        <Run Text="5 Nov 2016"/>
+                                    </TextBlock>
+                                    <TextBlock Text="Subject" Foreground="{ThemeResource SystemAccentColor}" FontSize="16" Opacity=".7" Margin="0,8,0,0"/>
+                                    <TextBlock Text="Description Summary.......blablalbalba blablalbalba blablalbalba blablalbalba...." TextWrapping="WrapWholeWords" Opacity=".7"/>
+                                </StackPanel>
+                            </GridViewItem>
+                            <GridViewItem Width="400" HorizontalContentAlignment="Left" Padding="0,0,0,12">
+                                <StackPanel Margin="8">
+                                    <TextBlock Text="Assignemtn Title 3" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                    <TextBlock Opacity=".7">
+                                        <Run Text="Due Date: " Foreground="{ThemeResource SystemAccentColor}"/>
+                                        <Run Text="5 Nov 2016"/>
+                                    </TextBlock>
+                                    <TextBlock Text="Subject" Foreground="{ThemeResource SystemAccentColor}" FontSize="16" Opacity=".7" Margin="0,8,0,0"/>
+                                    <TextBlock Text="Description Summary.......blablalbalba blablalbalba blablalbalba blablalbalba...." TextWrapping="WrapWholeWords" Opacity=".7"/>
+                                </StackPanel>
+                            </GridViewItem>
+                        </GridView>
                     </Grid>
                 </RelativePanel>
             </StackPanel>
