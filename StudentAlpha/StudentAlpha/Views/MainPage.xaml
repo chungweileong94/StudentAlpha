@@ -30,7 +30,7 @@
         <SplitView 
             x:Name="MainSplitView"
             DisplayMode="CompactOverlay" 
-            PaneBackground="Black"
+            PaneBackground="#202020"
             Margin="0,48,0,0">
             <SplitView.Pane>
                 <Grid>
@@ -41,7 +41,6 @@
 
                     <ScrollViewer HorizontalScrollMode="Disabled" VerticalScrollBarVisibility="Hidden">
                         <StackPanel>
-
                             <RadioButton 
                                 Content="Home"
                                 Tag="&#xE80F;" 

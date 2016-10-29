@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using StudentAlpha.Views;
 using Windows.UI;
+using Windows.Storage;
 
 namespace StudentAlpha
 {
@@ -24,14 +25,17 @@ namespace StudentAlpha
     /// </summary>
     sealed partial class App : Application
     {
-        /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
+        public static ApplicationDataContainer _LocalSettings;
+        public const string THEME_SETTING = "theme_setting";
+
         public App()
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            _LocalSettings = ApplicationData.Current.LocalSettings;
+
+            if (!_LocalSettings.Values.ContainsKey(THEME_SETTING)) { _LocalSettings.Values[THEME_SETTING] = 0; }
         }
 
         /// <summary>

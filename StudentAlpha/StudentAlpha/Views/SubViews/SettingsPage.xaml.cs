@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StudentAlpha.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,18 +14,17 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace StudentAlpha.Views.SubViews
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class SettingsPage : Page
     {
+        public SettingsViewModel _SettingsViewModel { get; set; }
+
         public SettingsPage()
         {
             this.InitializeComponent();
+
+            _SettingsViewModel = DataContext as SettingsViewModel;
         }
     }
 }

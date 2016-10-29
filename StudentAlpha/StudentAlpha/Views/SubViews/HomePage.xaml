@@ -12,8 +12,7 @@
             <Setter Property="Margin" Value="12"/>
             <Setter Property="Padding" Value="16"/>
             <Setter Property="Height" Value="300"/>
-            <Setter Property="Background" Value="LightGray"/>
-            <Setter Property="RequestedTheme" Value="Light"/>
+            <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundBaseLowBrush}"/>
         </Style>
     </Page.Resources>
 
@@ -48,6 +47,7 @@
                 <VisualState x:Name="MediumContentWidth">
                     <VisualState.Setters>
                         <Setter Target="TimetableGrid.(FrameworkElement.Width)" Value="300"/>
+                        <Setter Target="PageHeader.(FrameworkElement.HorizontalAlignment)" Value="center"/>
                     </VisualState.Setters>
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="800"/>
@@ -62,6 +62,7 @@
                         <Setter Target="EventsGrid.(RelativePanel.AlignLeftWithPanel)" Value="True"/>
                         <Setter Target="AssignmentsGrid.(RelativePanel.Below)" Value="EventsGrid"/>
                         <Setter Target="TimetableGrid.(FrameworkElement.Width)" Value="NaN"/>
+                        <Setter Target="PageHeader.(FrameworkElement.HorizontalAlignment)" Value="center"/>
                     </VisualState.Setters>
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="0"/>
@@ -87,51 +88,67 @@
 
         <!--Content-->
         <ScrollViewer Grid.Row="1">
-            <RelativePanel Margin="12">
-                <Grid x:Name="TimetableGrid" Width="400" Style="{StaticResource PanelGridStyle}" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="Timetable" Foreground="{ThemeResource SystemAccentColor}" Style="{ThemeResource TitleTextBlockStyle}"/>
-                    <ListView Grid.Row="1">
-                        <!--Sample data-->
-                        <ListViewItem Padding="8">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="9:00 AM" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                                    <TextBlock Text="~ 11:00 AM" Style="{ThemeResource BodyTextBlockStyle}" Opacity=".7" Margin="4,0,0,0" VerticalAlignment="Bottom"/>
+            <StackPanel Margin="12">
+                <TextBlock x:Name="PageHeader" Text="Today's Glance" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="12"/>
+                <RelativePanel>
+                    <Grid x:Name="TimetableGrid" Width="400" Style="{StaticResource PanelGridStyle}" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Timetable" Foreground="{ThemeResource SystemAccentColor}" Style="{ThemeResource TitleTextBlockStyle}"/>
+                        <ListView Grid.Row="1">
+                            <!--Sample data-->
+                            <ListViewItem Padding="8">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="9:00 AM" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                        <TextBlock Text="~ 11:00 AM" Style="{ThemeResource BodyTextBlockStyle}" Opacity=".7" Margin="4,0,0,0" VerticalAlignment="Bottom"/>
+                                    </StackPanel>
+                                    <TextBlock Text="Subject A" Opacity=".7" Style="{ThemeResource BodyTextBlockStyle}"/>
                                 </StackPanel>
-                                <TextBlock Text="Subject A" Opacity=".7" Style="{ThemeResource BodyTextBlockStyle}"/>
-                            </StackPanel>
-                        </ListViewItem>
-                        <ListViewItem Padding="8">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="1:00 PM" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                                    <TextBlock Text="~ 2:00 PM" Style="{ThemeResource BodyTextBlockStyle}" Opacity=".7" Margin="4,0,0,0" VerticalAlignment="Bottom"/>
+                            </ListViewItem>
+                            <ListViewItem Padding="8">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="1:00 PM" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                        <TextBlock Text="~ 2:00 PM" Style="{ThemeResource BodyTextBlockStyle}" Opacity=".7" Margin="4,0,0,0" VerticalAlignment="Bottom"/>
+                                    </StackPanel>
+                                    <TextBlock Text="Subject B" Opacity=".7" Style="{ThemeResource BodyTextBlockStyle}"/>
                                 </StackPanel>
-                                <TextBlock Text="Subject B" Opacity=".7" Style="{ThemeResource BodyTextBlockStyle}"/>
-                            </StackPanel>
-                        </ListViewItem>
-                        <ListViewItem Padding="8">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="3:00 PM" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                                    <TextBlock Text="~ 5:00 PM" Style="{ThemeResource BodyTextBlockStyle}" Opacity=".7" Margin="4,0,0,0" VerticalAlignment="Bottom"/>
+                            </ListViewItem>
+                            <ListViewItem Padding="8">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="3:00 PM" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                        <TextBlock Text="~ 5:00 PM" Style="{ThemeResource BodyTextBlockStyle}" Opacity=".7" Margin="4,0,0,0" VerticalAlignment="Bottom"/>
+                                    </StackPanel>
+                                    <TextBlock Text="Subject C" Opacity=".7" Style="{ThemeResource BodyTextBlockStyle}"/>
                                 </StackPanel>
-                                <TextBlock Text="Subject C" Opacity=".7" Style="{ThemeResource BodyTextBlockStyle}"/>
-                            </StackPanel>
-                        </ListViewItem>
-                    </ListView>
-                </Grid>
-                <Grid x:Name="EventsGrid" Style="{StaticResource PanelGridStyle}" RelativePanel.RightOf="TimetableGrid" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
-                    <TextBlock Text="Events" Foreground="{ThemeResource SystemAccentColor}" Style="{ThemeResource TitleTextBlockStyle}"/>
-                </Grid>
-                <Grid x:Name="AssignmentsGrid" Style="{StaticResource PanelGridStyle}" RelativePanel.Below="TimetableGrid" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
-                    <TextBlock Text="Assignments" Foreground="{ThemeResource SystemAccentColor}" Style="{ThemeResource TitleTextBlockStyle}"/>
-                </Grid>
-            </RelativePanel>
+                            </ListViewItem>
+                        </ListView>
+                    </Grid>
+                    <Grid x:Name="EventsGrid" Style="{StaticResource PanelGridStyle}" RelativePanel.RightOf="TimetableGrid" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Events" Foreground="{ThemeResource SystemAccentColor}" Style="{ThemeResource TitleTextBlockStyle}"/>
+
+                        <GridView Grid.Row="1">
+                            <GridViewItem>
+                                <StackPanel>
+                                    <TextBlock Text="Event Title" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+
+                                </StackPanel>
+                            </GridViewItem>
+                        </GridView>
+                    </Grid>
+                    <Grid x:Name="AssignmentsGrid" Style="{StaticResource PanelGridStyle}" RelativePanel.Below="TimetableGrid" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                        <TextBlock Text="Assignments" Foreground="{ThemeResource SystemAccentColor}" Style="{ThemeResource TitleTextBlockStyle}"/>
+                    </Grid>
+                </RelativePanel>
+            </StackPanel>
         </ScrollViewer>
     </Grid>
 </Page>

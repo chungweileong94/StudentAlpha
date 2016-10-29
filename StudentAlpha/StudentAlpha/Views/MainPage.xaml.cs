@@ -1,4 +1,5 @@
-﻿using StudentAlpha.Views.SubViews;
+﻿using static StudentAlpha.App;
+using StudentAlpha.Views.SubViews;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,6 +47,20 @@ namespace StudentAlpha.Views
                     MainFrame.GoBack();
                 }
             };
+
+            switch ((int)_LocalSettings.Values[THEME_SETTING])
+            {
+                case 0:
+                default:
+                    RequestedTheme = ElementTheme.Default;
+                    break;
+                case 1:
+                    RequestedTheme = ElementTheme.Light;
+                    break;
+                case 2:
+                    RequestedTheme = ElementTheme.Dark;
+                    break;
+            }
         }
 
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
