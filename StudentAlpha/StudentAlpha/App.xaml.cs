@@ -111,7 +111,7 @@ namespace StudentAlpha
             deferral.Complete();
         }
 
-        private void setupWindowBarColor()
+        private async void setupWindowBarColor()
         {
             var view = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
             //title bar
@@ -125,6 +125,16 @@ namespace StudentAlpha
             view.TitleBar.ButtonForegroundColor = Colors.White;
             view.TitleBar.ButtonInactiveBackgroundColor = (Color)Resources["SystemAccentColor"];
             view.TitleBar.ButtonInactiveForegroundColor = Colors.LightGray;
+
+            //mobile specific
+            if (Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
+            {
+                var statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
+                statusBar.BackgroundColor = (Color)Resources["SystemAccentColor"];
+                statusBar.ForegroundColor = Colors.White;
+                statusBar.BackgroundOpacity = 1;
+                await statusBar.ShowAsync();
+            }
         }
     }
 }
