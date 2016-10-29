@@ -110,10 +110,17 @@ namespace StudentAlpha
         private void setupWindowBarColor()
         {
             var view = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
+            //title bar
             view.TitleBar.BackgroundColor = (Color)Resources["SystemAccentColor"];
-            view.TitleBar.ButtonBackgroundColor = (Color)Resources["SystemAccentColor"];
             view.TitleBar.ForegroundColor = Colors.White;
+            view.TitleBar.InactiveBackgroundColor = (Color)Resources["SystemAccentColor"];
+            view.TitleBar.InactiveForegroundColor = Colors.LightGray;
+
+            //title bar button
+            view.TitleBar.ButtonBackgroundColor = (Color)Resources["SystemAccentColor"];
             view.TitleBar.ButtonForegroundColor = Colors.White;
+            view.TitleBar.ButtonInactiveBackgroundColor = (Color)Resources["SystemAccentColor"];
+            view.TitleBar.ButtonInactiveForegroundColor = Colors.LightGray;
         }
     }
 }

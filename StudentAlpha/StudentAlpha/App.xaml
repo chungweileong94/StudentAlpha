@@ -36,6 +36,8 @@
                                     <VisualState x:Name="Checked">
                                         <VisualState.Setters>
                                             <Setter Target="border.(UIElement.Visibility)" Value="Visible"/>
+                                            <Setter Target="icon.(UIElement.Foreground)" Value="{ThemeResource SystemAccentColor}"/>
+                                            <Setter Target="ContentPresenter.(UIElement.Foreground)" Value="{ThemeResource SystemAccentColor}"/>
                                         </VisualState.Setters>
                                     </VisualState>
                                     <VisualState x:Name="Unchecked"/>
@@ -49,7 +51,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Border x:Name="border" Width="5" Margin="0,8" Background="{ThemeResource SystemAccentColor}" HorizontalAlignment="Left" Visibility="Collapsed"/>
-                                <TextBlock Text="{TemplateBinding Tag}" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <TextBlock x:Name="icon" Text="{TemplateBinding Tag}" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" Grid.Column="1" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="16,0,0,0" TextWrapping="Wrap" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                             </Grid>
                         </Grid>
