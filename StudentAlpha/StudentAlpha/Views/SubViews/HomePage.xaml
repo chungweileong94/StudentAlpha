@@ -98,19 +98,28 @@
                         <!--Sample data-->
                         <ListViewItem Padding="8">
                             <StackPanel>
-                                <TextBlock Text="9:00 AM" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="9:00 AM" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                    <TextBlock Text="~ 11:00 AM" Style="{ThemeResource BodyTextBlockStyle}" Opacity=".7" Margin="4,0,0,0" VerticalAlignment="Bottom"/>
+                                </StackPanel>
                                 <TextBlock Text="Subject A" Opacity=".7" Style="{ThemeResource BodyTextBlockStyle}"/>
                             </StackPanel>
                         </ListViewItem>
                         <ListViewItem Padding="8">
                             <StackPanel>
-                                <TextBlock Text="1:00 PM" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="1:00 PM" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                    <TextBlock Text="~ 2:00 PM" Style="{ThemeResource BodyTextBlockStyle}" Opacity=".7" Margin="4,0,0,0" VerticalAlignment="Bottom"/>
+                                </StackPanel>
                                 <TextBlock Text="Subject B" Opacity=".7" Style="{ThemeResource BodyTextBlockStyle}"/>
                             </StackPanel>
                         </ListViewItem>
                         <ListViewItem Padding="8">
                             <StackPanel>
-                                <TextBlock Text="3:00 PM" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="3:00 PM" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                    <TextBlock Text="~ 5:00 PM" Style="{ThemeResource BodyTextBlockStyle}" Opacity=".7" Margin="4,0,0,0" VerticalAlignment="Bottom"/>
+                                </StackPanel>
                                 <TextBlock Text="Subject C" Opacity=".7" Style="{ThemeResource BodyTextBlockStyle}"/>
                             </StackPanel>
                         </ListViewItem>
