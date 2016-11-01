@@ -1,11 +1,20 @@
 ﻿<Page
-    x:Class="StudentAlpha.Views.SubViews.AssignmentsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:StudentAlpha.Views.SubViews"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ViewModels="using:StudentAlpha.ViewModels"
+    x:Class="StudentAlpha.Views.SubViews.AssignmentsPage"
     mc:Ignorable="d">
+
+    <Page.DataContext>
+        <ViewModels:AssignmentsViewModel/>
+    </Page.DataContext>
+
+    <Page.Resources>
+        <local:DetailVisibilityConverter x:Key="DetailVisibilityConverter"/>
+    </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
@@ -45,5 +54,65 @@
 
             <AppBarButton Icon="Add" Label="New"/>
         </CommandBar>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Assignment List-->
+            <ListView 
+                x:Name="AssignmentListView"
+                ItemsSource="{Binding Assignments}" 
+                SelectedItem="{Binding SelectedAssignment, Mode=TwoWay}"
+                Background="{ThemeResource SystemControlBackgroundBaseLowBrush}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="BorderBrush" Value="{ThemeResource SystemControlBackgroundAltHighBrush}"/>
+                        <Setter Property="BorderThickness" Value=".5"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Padding="8">
+                            <TextBlock Text="{Binding Title}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                            <TextBlock Text="{Binding Subject}" Opacity=".7" Margin="0,0,0,8"/>
+                            <TextBlock Opacity=".7">
+                                    <Run Text="Due Date: " Foreground="{ThemeResource SystemAccentColor}"/>
+                                    <Run Text="{Binding DueDateShortStringFormat}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <!--Assignment Content-->
+            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+                <Grid 
+                    DataContext="{Binding SelectedAssignment}" 
+                    Padding="16"
+                    Visibility="{Binding ElementName=AssignmentListView,Path=SelectedItem,Converter={StaticResource DetailVisibilityConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="{Binding Title}" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,0,0,4"/>
+
+                        <TextBlock Opacity=".7">
+                            <Run Text="Subject: " Foreground="{ThemeResource SystemAccentColor}"/>
+                            <Run Text="{Binding Subject}"/>
+                        </TextBlock>
+                        <TextBlock Opacity=".7">
+                            <Run Text="Due Date: " Foreground="{ThemeResource SystemAccentColor}"/>
+                            <Run Text="{Binding DueDateLongStringFormat}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Page>
