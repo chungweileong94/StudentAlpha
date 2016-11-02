@@ -1,0 +1,99 @@
+﻿<Page
+    x:Class="StudentAlpha.Views.SubViews.AssignmentAddPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StudentAlpha.Views.SubViews"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <ContinuumNavigationTransitionInfo/>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
+
+    <Page.Resources>
+        <local:DateTimeToDateTimeOffsetConverter x:Key="DateTimeToDateTimeOffsetConverter"/>
+    </Page.Resources>
+
+    <Page.TopAppBar>
+        <CommandBar Style="{StaticResource CommandBarStyle}">
+            <CommandBar.Content>
+                <Grid Height="48">
+                    <TextBlock Text="New Assignment" Style="{StaticResource CommandBarTitleTextBlockStyle}"/>
+                </Grid>
+            </CommandBar.Content>
+        </CommandBar>
+    </Page.TopAppBar>
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Icon="Accept" Label="Create" Click="CreateAppBarButton_Click">
+                <FlyoutBase.AttachedFlyout>
+                    <Flyout>
+                        <TextBlock Text="All field are required"/>
+                    </Flyout>
+                </FlyoutBase.AttachedFlyout>
+            </AppBarButton>
+            <AppBarButton Icon="Cancel" Label="Cancel" Click="CancelAppBarButton_Click"/>
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <ScrollViewer Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="LargeWidth">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720"/>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="SmallWidth">
+                    <VisualState.Setters>
+                        <Setter Target="_StackPanel.(Grid.Column)" Value="0"/>
+                        <Setter Target="_StackPanel.(Grid.ColumnSpan)" Value="3"/>
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel x:Name="_StackPanel" Grid.Column="1" Padding="16">
+                <TextBox Text="{x:Bind _AssignmentsViewModel.Title_Input,Mode=TwoWay}" FontSize="16" PlaceholderText="Assignment's Title" BorderThickness="1" Margin="0,0,0,20">
+                    <TextBox.Header>
+                        <TextBlock Text="Title" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                    </TextBox.Header>
+                </TextBox>
+
+                <TextBox Text="{x:Bind _AssignmentsViewModel.Subject_Input,Mode=TwoWay}" FontSize="16" PlaceholderText="Assignment's Subject" BorderThickness="1" Margin="0,0,0,20">
+                    <TextBox.Header>
+                        <TextBlock Text="Subject" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                    </TextBox.Header>
+                </TextBox>
+
+                <TextBox Text="{x:Bind _AssignmentsViewModel.Description_Input,Mode=TwoWay}" AcceptsReturn="True" FontSize="16" PlaceholderText="Assignment's Description" BorderThickness="1" Height="200" Margin="0,0,0,20">
+                    <TextBox.Header>
+                        <TextBlock Text="Description" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                    </TextBox.Header>
+                </TextBox>
+
+                <DatePicker Date="{x:Bind _AssignmentsViewModel.DueDate_Input,Mode=TwoWay,Converter={StaticResource DateTimeToDateTimeOffsetConverter}}" HorizontalAlignment="Left">
+                    <DatePicker.Header>
+                        <TextBlock Text="Due Date" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                    </DatePicker.Header>
+                </DatePicker>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>

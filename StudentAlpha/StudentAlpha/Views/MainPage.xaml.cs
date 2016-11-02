@@ -40,7 +40,7 @@ namespace StudentAlpha.Views
             };
 
             SystemNavigationManager.GetForCurrentView().BackRequested += MainFrame_BackRequested;
-            
+
             switch ((int)_LocalSettings.Values[THEME_SETTING])
             {
                 case 0:
@@ -71,10 +71,7 @@ namespace StudentAlpha.Views
 
             if (PreviousPageType != null)
             {
-                if (PreviousPageType == typeof(AssignmentDetailPage))
-                {
-                    MainFrame.Navigate(typeof(AssignmentsPage));
-                }
+                MainFrame.Navigate(PreviousPageType);
             }
         }
 

@@ -1,4 +1,6 @@
-﻿using StudentAlpha.Models;
+﻿using static StudentAlpha.App;
+using StudentAlpha.Models;
+using StudentAlpha.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,11 +9,15 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Windows.UI.Popups;
+using Windows.UI.Xaml.Data;
 
 namespace StudentAlpha.ViewModels
 {
     public class AssignmentsViewModel : INotifyPropertyChanged
     {
+        #region Properties
         public ObservableCollection<Assignment> Assignments { get; set; }
 
         private Assignment _SelectedAssignment;
@@ -21,26 +27,85 @@ namespace StudentAlpha.ViewModels
             set { Set(ref _SelectedAssignment, value); }
         }
 
+        #region Add purpose
+        public string Title_Input { get; set; }
+        public string Description_Input { get; set; }
+        public string Subject_Input { get; set; }
+        public DateTime DueDate_Input { get; set; } = DateTime.Now;
+        #endregion
+        #endregion
+
         public AssignmentsViewModel()
         {
             Assignments = new ObservableCollection<Assignment>();
-            //SelectedAssignment = new Assignment()
-            //{
-            //    Title = "Assignment {i}",
-            //    Subject = "Subject {i}",
-            //    DueDate = DateTime.Now
-            //};
-            //sample data
-            for (int i = 0; i < 5; i++)
+        }
+
+        #region Methods
+        public async Task<bool> AddAsync()
+        {
+            if (!string.IsNullOrWhiteSpace(Title_Input) &&
+                !string.IsNullOrWhiteSpace(Description_Input) &&
+                !string.IsNullOrWhiteSpace(Subject_Input) &&
+                DueDate_Input != null)
             {
                 Assignments.Add(new Assignment()
                 {
-                    Title = $"Assignment {i}",
-                    Subject = $"Subject {i}",
-                    DueDate = DateTime.Now
+                    Title = Title_Input,
+                    Description = Description_Input,
+                    Subject = Subject_Input,
+                    DueDate = DueDate_Input,
+                    CreatedDateTime = DateTime.Now,
+                    Status = false
                 });
+
+                await WriteToFileAsync();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public async void Remove()
+        {
+            if (SelectedAssignment != null)
+            {
+                MessageDialog msg = new MessageDialog("Are you sure to delete?", "Delete Assignment");
+                msg.Commands.Add(new UICommand("Yes", async delegate
+                {
+                    Assignments.Remove(SelectedAssignment);
+                    await WriteToFileAsync();
+                }));
+                msg.Commands.Add(new UICommand("No"));
+                await msg.ShowAsync();
             }
         }
+
+        public async void ChangeStatus()
+        {
+            var assignment = Assignments.First(a => (a == SelectedAssignment));
+            assignment.Status = !assignment.Status;
+            await WriteToFileAsync();
+        }
+
+        public async Task<AssignmentsViewModel> LoadAsync()
+        {
+            try
+            {
+                var jsonString = await new FileService().ReadDataFromLocalStorageAsync(ASSIGNMENTS_JSONFILENAME);
+                Assignments = JsonConvert.DeserializeObject<ObservableCollection<Assignment>>(jsonString);
+            }
+            catch { }
+
+            return this;
+        }
+
+        private async Task WriteToFileAsync()
+        {
+            string jsonString = JsonConvert.SerializeObject(Assignments);
+            await new FileService().WriteDataToLocalStorageAsync(ASSIGNMENTS_JSONFILENAME, jsonString);
+        }
+        #endregion
 
         #region INotifyPropertyChanged Helper
         public event PropertyChangedEventHandler PropertyChanged;

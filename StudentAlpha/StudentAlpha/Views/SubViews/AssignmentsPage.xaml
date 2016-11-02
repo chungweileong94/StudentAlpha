@@ -47,16 +47,11 @@
         <CommandBar x:Name="TopCommandBar" Grid.RowSpan="2" Style="{StaticResource CommandBarStyle}">
             <CommandBar.Content>
                 <Grid Height="48">
-                    <TextBlock 
-                        Text="Assignments"
-                        FontWeight="Bold"
-                        FontSize="16"
-                        Margin="16,0"
-                        VerticalAlignment="Center"/>
+                    <TextBlock Text="Assignments" Style="{StaticResource CommandBarTitleTextBlockStyle}"/>
                 </Grid>
             </CommandBar.Content>
 
-            <AppBarButton Icon="Add" Label="New"/>
+            <AppBarButton Icon="Add" Label="New" Click="NewAppBarButton_Click"/>
         </CommandBar>
 
         <CommandBar 
@@ -66,16 +61,13 @@
             Visibility="{x:Bind AssignmentListView.SelectedItem,Mode=OneWay,Converter={StaticResource DetailVisibilityConverter}}">
             <CommandBar.Content>
                 <Grid Height="48">
-                    <TextBlock 
-                        Text="Detail"
-                        FontWeight="Bold"
-                        FontSize="16"
-                        Margin="16,0"
-                        VerticalAlignment="Center"/>
+                    <TextBlock Text="Detail" Style="{StaticResource CommandBarTitleTextBlockStyle}"/>
                 </Grid>
             </CommandBar.Content>
 
+            <AppBarButton Icon="Accept" Label="Toggle Status" Click="{x:Bind _AssignmentsViewModel.ChangeStatus}"/>
             <AppBarButton Icon="Edit" Label="Edit"/>
+            <AppBarButton Icon="Delete" Label="Delete" Click="{x:Bind _AssignmentsViewModel.Remove}"/>
         </CommandBar>
 
         <Grid Grid.Row="1" Grid.ColumnSpan="2">
@@ -133,10 +125,22 @@
                                         <Run Text="Subject: " Foreground="{ThemeResource SystemAccentColor}"/>
                                         <Run Text="{x:Bind Subject}"/>
                                 </TextBlock>
-                                <TextBlock Opacity=".7">
+                                <Grid>
+                                    <TextBlock Opacity=".7" HorizontalAlignment="Left">
                                         <Run Text="Due Date: " Foreground="{ThemeResource SystemAccentColor}"/>
                                         <Run Text="{x:Bind DueDateLongStringFormat}"/>
-                                </TextBlock>
+                                    </TextBlock>
+
+                                    <TextBlock FontWeight="Bold" Opacity=".7" HorizontalAlignment="Right">
+                                        <Run Text="Status: " Foreground="{ThemeResource SystemAccentColor}"/>
+                                        <Run Text="{x:Bind StatusStringFormat,Mode=OneWay}"/>
+                                    </TextBlock>
+                                </Grid>
+
+                                <Border BorderBrush="{ThemeResource SystemControlBackgroundBaseHighBrush}" BorderThickness=".7" Opacity=".5" Margin="-4,32,-4,4"/>
+
+                                <TextBlock Text="Description" Foreground="{ThemeResource SystemAccentColor}" Opacity=".7" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="0,0,0,4"/>
+                                <TextBlock Text="{x:Bind Description}" Opacity=".7"/>
                             </StackPanel>
                         </Grid>
                     </DataTemplate>

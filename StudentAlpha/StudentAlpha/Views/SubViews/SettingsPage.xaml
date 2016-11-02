@@ -38,12 +38,7 @@
         <CommandBar x:Name="TopCommandBar" Grid.RowSpan="2" Style="{StaticResource CommandBarStyle}">
             <CommandBar.Content>
                 <Grid Height="48">
-                    <TextBlock 
-                        Text="Settings"
-                        FontWeight="Bold"
-                        FontSize="16"
-                        Margin="16,0"
-                        VerticalAlignment="Center"/>
+                    <TextBlock Text="Settings" Style="{StaticResource CommandBarTitleTextBlockStyle}"/>
                 </Grid>
             </CommandBar.Content>
         </CommandBar>

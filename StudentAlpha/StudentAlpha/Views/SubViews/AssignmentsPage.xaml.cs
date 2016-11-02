@@ -1,18 +1,9 @@
 ﻿using static StudentAlpha.App;
 using StudentAlpha.Models;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using StudentAlpha.ViewModels;
 
@@ -25,20 +16,23 @@ namespace StudentAlpha.Views.SubViews
         public AssignmentsPage()
         {
             this.InitializeComponent();
+        }
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
 
             if (_AssignmentsViewModel_Share == null)
             {
-                _AssignmentsViewModel_Share = new AssignmentsViewModel();
+                _AssignmentsViewModel_Share = await new AssignmentsViewModel().LoadAsync();
             }
 
             _AssignmentsViewModel = _AssignmentsViewModel_Share;
+
+            Bindings.Update();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-        }
-
+        #region Events
         private void AssignmentListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             if (CommandBarVisualStateGroup.CurrentState.Name == nameof(SmallWidth))
@@ -59,6 +53,13 @@ namespace StudentAlpha.Views.SubViews
                 }
             }
         }
+
+        private void NewAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            var rootFrame = Window.Current.Content as Frame;
+            rootFrame.Navigate(typeof(AssignmentAddPage));
+        }
+        #endregion
     }
 
     #region Converters

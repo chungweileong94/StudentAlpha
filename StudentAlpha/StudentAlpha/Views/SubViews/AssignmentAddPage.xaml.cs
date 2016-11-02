@@ -1,21 +1,36 @@
 ﻿using static StudentAlpha.App;
-using Windows.UI.Core;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using StudentAlpha.Models;
+using Windows.UI.Core;
 using StudentAlpha.ViewModels;
 
 namespace StudentAlpha.Views.SubViews
 {
-    public sealed partial class AssignmentDetailPage : Page
+    public sealed partial class AssignmentAddPage : Page
     {
         public AssignmentsViewModel _AssignmentsViewModel { get; set; }
 
-        public AssignmentDetailPage()
+        public AssignmentAddPage()
         {
             this.InitializeComponent();
+
             _AssignmentsViewModel = _AssignmentsViewModel_Share;
+            _AssignmentsViewModel.Title_Input = string.Empty;
+            _AssignmentsViewModel.Subject_Input = string.Empty;
+            _AssignmentsViewModel.Description_Input = string.Empty;
+            _AssignmentsViewModel.DueDate_Input = DateTime.Now;
 
             switch ((int)_LocalSettings.Values[THEME_SETTING])
             {
@@ -36,44 +51,46 @@ namespace StudentAlpha.Views.SubViews
         {
             base.OnNavigatedTo(e);
             PreviousPageType = typeof(AssignmentsPage);
-
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = Frame.CanGoBack ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
-            SystemNavigationManager.GetForCurrentView().BackRequested += AssignmentDetailPage_BackRequested;
+            SystemNavigationManager.GetForCurrentView().BackRequested += AssignmentAddPage_BackRequested; ;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
-            SystemNavigationManager.GetForCurrentView().BackRequested -= AssignmentDetailPage_BackRequested;
+            SystemNavigationManager.GetForCurrentView().BackRequested -= AssignmentAddPage_BackRequested;
         }
 
-        private void AssignmentDetailPage_BackRequested(object sender, BackRequestedEventArgs e)
+        private void AssignmentAddPage_BackRequested(object sender, BackRequestedEventArgs e)
         {
             if (Frame.CanGoBack)
             {
                 e.Handled = true;
-                _AssignmentsViewModel_Share.SelectedAssignment = null;
                 Frame.GoBack();
             }
         }
 
         #region Events
-        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        private async void CreateAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            if (e.NewSize.Width >= 720)
+            var result = await _AssignmentsViewModel.AddAsync();
+
+            if (result)
             {
                 if (Frame.CanGoBack)
                 {
                     Frame.GoBack();
                 }
             }
+            else
+            {
+                FlyoutBase.GetAttachedFlyout(sender as FrameworkElement).ShowAt(sender as FrameworkElement);
+            }
         }
 
-        private void DeleteAppBarButton_Click(object sender, RoutedEventArgs e)
+        private void CancelAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            _AssignmentsViewModel.Remove();
-
             if (Frame.CanGoBack)
             {
                 Frame.GoBack();
@@ -81,4 +98,13 @@ namespace StudentAlpha.Views.SubViews
         }
         #endregion
     }
+
+    #region Converters
+    public class DateTimeToDateTimeOffsetConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language) => new DateTimeOffset((DateTime)value);
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language) => ((DateTimeOffset)value).DateTime;
+    }
+    #endregion
 }

@@ -49,7 +49,19 @@ namespace StudentAlpha.Models
         public bool Status
         {
             get { return _Status; }
-            set { Set(ref _Status, value); }
+            set
+            {
+                Set(ref _Status, value);
+                StatusStringFormat = Status ? "Complete" : "Incomplete";
+            }
+        }
+
+        private string _StatusStringFormat;
+
+        public string StatusStringFormat
+        {
+            get { return _StatusStringFormat; }
+            set { Set(ref _StatusStringFormat, value); }
         }
         #endregion
 

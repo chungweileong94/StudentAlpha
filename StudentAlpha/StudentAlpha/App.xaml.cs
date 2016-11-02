@@ -26,6 +26,7 @@ namespace StudentAlpha
     {
         public static ApplicationDataContainer _LocalSettings;
         public const string THEME_SETTING = "theme_setting";
+        public const string ASSIGNMENTS_JSONFILENAME = "Assignments.json";
         public static Type PreviousPageType = null;
         public static AssignmentsViewModel _AssignmentsViewModel_Share { get; set; }
 
