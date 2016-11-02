@@ -31,7 +31,7 @@ namespace StudentAlpha.ViewModels
             //    DueDate = DateTime.Now
             //};
             //sample data
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 5; i++)
             {
                 Assignments.Add(new Assignment()
                 {

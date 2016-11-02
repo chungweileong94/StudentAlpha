@@ -39,15 +39,8 @@ namespace StudentAlpha.Views
                 }
             };
 
-            SystemNavigationManager.GetForCurrentView().BackRequested += (s, e) =>
-            {
-                if (MainFrame.CanGoBack)
-                {
-                    e.Handled = true;
-                    MainFrame.GoBack();
-                }
-            };
-
+            SystemNavigationManager.GetForCurrentView().BackRequested += MainFrame_BackRequested;
+            
             switch ((int)_LocalSettings.Values[THEME_SETTING])
             {
                 case 0:
@@ -61,6 +54,34 @@ namespace StudentAlpha.Views
                     RequestedTheme = ElementTheme.Dark;
                     break;
             }
+        }
+
+        public void MainFrame_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if (MainFrame.CanGoBack)
+            {
+                e.Handled = true;
+                MainFrame.GoBack();
+            }
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            if (PreviousPageType != null)
+            {
+                if (PreviousPageType == typeof(AssignmentDetailPage))
+                {
+                    MainFrame.Navigate(typeof(AssignmentsPage));
+                }
+            }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            SystemNavigationManager.GetForCurrentView().BackRequested -= MainFrame_BackRequested;
         }
 
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)

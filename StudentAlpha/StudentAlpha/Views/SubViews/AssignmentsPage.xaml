@@ -4,16 +4,13 @@
     xmlns:local="using:StudentAlpha.Views.SubViews"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ViewModels="using:StudentAlpha.ViewModels"
+    xmlns:models="using:StudentAlpha.Models"
     x:Class="StudentAlpha.Views.SubViews.AssignmentsPage"
-    mc:Ignorable="d">
-
-    <Page.DataContext>
-        <ViewModels:AssignmentsViewModel/>
-    </Page.DataContext>
+    mc:Ignorable="d" SizeChanged="Page_SizeChanged">
 
     <Page.Resources>
         <local:DetailVisibilityConverter x:Key="DetailVisibilityConverter"/>
+        <local:AssignmentToObjectConverter x:Key="AssignmentToObjectConverter"/>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -21,6 +18,10 @@
             <RowDefinition Height="48"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="CommandBarVisualStateGroup">
@@ -32,6 +33,9 @@
                 <VisualState x:Name="SmallWidth">
                     <VisualState.Setters>
                         <Setter Target="TopCommandBar.(UIElement.Margin)" Value="48,0,0,0"/>
+                        <Setter Target="TopCommandBar.(Grid.ColumnSpan)" Value="2"/>
+                        <Setter Target="AssignmentListView.(Grid.ColumnSpan)" Value="2"/>
+                        <Setter Target="DetailContentPresenter.(UIElement.Visibility)" Value="Collapsed"/>
                     </VisualState.Setters>
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="0"/>
@@ -55,7 +59,26 @@
             <AppBarButton Icon="Add" Label="New"/>
         </CommandBar>
 
-        <Grid Grid.Row="1">
+        <CommandBar 
+            Grid.Column="1" 
+            Grid.RowSpan="2" 
+            Style="{StaticResource CommandBarStyle}"
+            Visibility="{x:Bind AssignmentListView.SelectedItem,Mode=OneWay,Converter={StaticResource DetailVisibilityConverter}}">
+            <CommandBar.Content>
+                <Grid Height="48">
+                    <TextBlock 
+                        Text="Detail"
+                        FontWeight="Bold"
+                        FontSize="16"
+                        Margin="16,0"
+                        VerticalAlignment="Center"/>
+                </Grid>
+            </CommandBar.Content>
+
+            <AppBarButton Icon="Edit" Label="Edit"/>
+        </CommandBar>
+
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="2*"/>
@@ -64,9 +87,11 @@
             <!--Assignment List-->
             <ListView 
                 x:Name="AssignmentListView"
-                ItemsSource="{Binding Assignments}" 
-                SelectedItem="{Binding SelectedAssignment, Mode=TwoWay}"
-                Background="{ThemeResource SystemControlBackgroundBaseLowBrush}">
+                ItemsSource="{x:Bind _AssignmentsViewModel.Assignments}" 
+                SelectedItem="{x:Bind _AssignmentsViewModel.SelectedAssignment, Mode=TwoWay, Converter={StaticResource AssignmentToObjectConverter}}"
+                Background="{ThemeResource SystemControlBackgroundBaseLowBrush}"
+                IsItemClickEnabled="True"
+                ItemClick="AssignmentListView_ItemClick">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="BorderBrush" Value="{ThemeResource SystemControlBackgroundAltHighBrush}"/>
@@ -75,13 +100,13 @@
                     </Style>
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Padding="8">
-                            <TextBlock Text="{Binding Title}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                            <TextBlock Text="{Binding Subject}" Opacity=".7" Margin="0,0,0,8"/>
+                    <DataTemplate x:DataType="models:Assignment">
+                        <StackPanel Padding="8" HorizontalAlignment="Stretch">
+                            <TextBlock Text="{x:Bind Title}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                            <TextBlock Text="{x:Bind Subject}" Opacity=".7" Margin="0,0,0,8"/>
                             <TextBlock Opacity=".7">
                                     <Run Text="Due Date: " Foreground="{ThemeResource SystemAccentColor}"/>
-                                    <Run Text="{Binding DueDateShortStringFormat}"/>
+                                    <Run Text="{x:Bind DueDateShortStringFormat}"/>
                             </TextBlock>
                         </StackPanel>
                     </DataTemplate>
@@ -89,30 +114,34 @@
             </ListView>
 
             <!--Assignment Content-->
-            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
-                <Grid 
-                    DataContext="{Binding SelectedAssignment}" 
-                    Padding="16"
-                    Visibility="{Binding ElementName=AssignmentListView,Path=SelectedItem,Converter={StaticResource DetailVisibilityConverter}}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+            <ContentPresenter 
+                x:Name="DetailContentPresenter" 
+                Grid.Column="1" 
+                Content="{x:Bind _AssignmentsViewModel.SelectedAssignment,Mode=OneWay}"
+                Visibility="{x:Bind AssignmentListView.SelectedItem,Mode=OneWay,Converter={StaticResource DetailVisibilityConverter}}">
+                <ContentPresenter.ContentTemplate>
+                    <DataTemplate x:DataType="models:Assignment">
+                        <Grid Padding="16">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
 
-                    <StackPanel>
-                        <TextBlock Text="{Binding Title}" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,0,0,4"/>
-
-                        <TextBlock Opacity=".7">
-                            <Run Text="Subject: " Foreground="{ThemeResource SystemAccentColor}"/>
-                            <Run Text="{Binding Subject}"/>
-                        </TextBlock>
-                        <TextBlock Opacity=".7">
-                            <Run Text="Due Date: " Foreground="{ThemeResource SystemAccentColor}"/>
-                            <Run Text="{Binding DueDateLongStringFormat}"/>
-                        </TextBlock>
-                    </StackPanel>
-                </Grid>
-            </ScrollViewer>
+                            <StackPanel>
+                                <TextBlock Text="{x:Bind Title}" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,0,0,4"/>
+                                <TextBlock Opacity=".7">
+                                        <Run Text="Subject: " Foreground="{ThemeResource SystemAccentColor}"/>
+                                        <Run Text="{x:Bind Subject}"/>
+                                </TextBlock>
+                                <TextBlock Opacity=".7">
+                                        <Run Text="Due Date: " Foreground="{ThemeResource SystemAccentColor}"/>
+                                        <Run Text="{x:Bind DueDateLongStringFormat}"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ContentPresenter.ContentTemplate>
+            </ContentPresenter>
         </Grid>
     </Grid>
 </Page>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using static StudentAlpha.App;
+using StudentAlpha.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,14 +14,50 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using StudentAlpha.ViewModels;
 
 namespace StudentAlpha.Views.SubViews
 {
     public sealed partial class AssignmentsPage : Page
     {
+        public AssignmentsViewModel _AssignmentsViewModel { get; set; }
+
         public AssignmentsPage()
         {
             this.InitializeComponent();
+
+            if (_AssignmentsViewModel_Share == null)
+            {
+                _AssignmentsViewModel_Share = new AssignmentsViewModel();
+            }
+
+            _AssignmentsViewModel = _AssignmentsViewModel_Share;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+        }
+
+        private void AssignmentListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (CommandBarVisualStateGroup.CurrentState.Name == nameof(SmallWidth))
+            {
+                var rootFrame = Window.Current.Content as Frame;
+                rootFrame.Navigate(typeof(AssignmentDetailPage), _AssignmentsViewModel.SelectedAssignment = e.ClickedItem as Assignment);
+            }
+        }
+
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (CommandBarVisualStateGroup.CurrentState.Name == nameof(SmallWidth))
+            {
+                if (_AssignmentsViewModel.SelectedAssignment != null)
+                {
+                    var rootFrame = Window.Current.Content as Frame;
+                    rootFrame.Navigate(typeof(AssignmentDetailPage), _AssignmentsViewModel.SelectedAssignment);
+                }
+            }
         }
     }
 
@@ -32,6 +70,13 @@ namespace StudentAlpha.Views.SubViews
         {
             throw new NotImplementedException();
         }
+    }
+
+    public class AssignmentToObjectConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language) => value;
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language) => (value == null) ? null : value as Assignment;
     }
     #endregion
 }

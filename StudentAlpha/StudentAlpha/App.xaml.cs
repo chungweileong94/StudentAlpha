@@ -17,16 +17,17 @@ using Windows.UI.Xaml.Navigation;
 using StudentAlpha.Views;
 using Windows.UI;
 using Windows.Storage;
+using StudentAlpha.Models;
+using StudentAlpha.ViewModels;
 
 namespace StudentAlpha
 {
-    /// <summary>
-    /// Provides application-specific behavior to supplement the default Application class.
-    /// </summary>
     sealed partial class App : Application
     {
         public static ApplicationDataContainer _LocalSettings;
         public const string THEME_SETTING = "theme_setting";
+        public static Type PreviousPageType = null;
+        public static AssignmentsViewModel _AssignmentsViewModel_Share { get; set; }
 
         public App()
         {
