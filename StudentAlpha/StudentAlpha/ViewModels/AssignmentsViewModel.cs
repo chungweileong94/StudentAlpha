@@ -93,7 +93,7 @@ namespace StudentAlpha.ViewModels
             try
             {
                 var jsonString = await new FileService().ReadDataFromLocalStorageAsync(ASSIGNMENTS_JSONFILENAME);
-                Assignments = JsonConvert.DeserializeObject<ObservableCollection<Assignment>>(jsonString);
+                Assignments = await JsonConvert.DeserializeObjectAsync<ObservableCollection<Assignment>>(jsonString);
             }
             catch { }
 
@@ -125,4 +125,13 @@ namespace StudentAlpha.ViewModels
         }
         #endregion
     }
+
+    #region Converters
+    public class DateTimeToDateTimeOffsetConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language) => new DateTimeOffset((DateTime)value);
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language) => ((DateTimeOffset)value).DateTime;
+    }
+    #endregion
 }
