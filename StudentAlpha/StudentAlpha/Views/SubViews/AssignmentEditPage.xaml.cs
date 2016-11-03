@@ -32,6 +32,7 @@ namespace StudentAlpha.Views.SubViews
             _AssignmentsViewModel.Subject_Input = string.Empty;
             _AssignmentsViewModel.Description_Input = string.Empty;
             _AssignmentsViewModel.DueDate_Input = DateTime.Now;
+            DataContext = _AssignmentsViewModel;
 
             switch ((int)_LocalSettings.Values[THEME_SETTING])
             {
@@ -76,6 +77,23 @@ namespace StudentAlpha.Views.SubViews
             {
                 e.Handled = true;
                 Frame.GoBack();
+            }
+        }
+
+        private async void DoneAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            var result = await _AssignmentsViewModel.EditAsync();
+
+            if (result)
+            {
+                if (Frame.CanGoBack)
+                {
+                    Frame.GoBack();
+                }
+            }
+            else
+            {
+                FlyoutBase.GetAttachedFlyout(sender as FrameworkElement).ShowAt(sender as FrameworkElement);
             }
         }
     }

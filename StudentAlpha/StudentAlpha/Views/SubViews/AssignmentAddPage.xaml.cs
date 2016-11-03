@@ -31,6 +31,7 @@ namespace StudentAlpha.Views.SubViews
             _AssignmentsViewModel.Subject_Input = string.Empty;
             _AssignmentsViewModel.Description_Input = string.Empty;
             _AssignmentsViewModel.DueDate_Input = DateTime.Now;
+            DataContext = _AssignmentsViewModel;
 
             switch ((int)_LocalSettings.Values[THEME_SETTING])
             {

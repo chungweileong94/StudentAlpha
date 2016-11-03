@@ -32,7 +32,7 @@
 
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton Icon="Accept" Label="Done">
+            <AppBarButton Icon="Accept" Label="Done" Click="DoneAppBarButton_Click">
                 <FlyoutBase.AttachedFlyout>
                     <Flyout>
                         <TextBlock Text="All field are required"/>
@@ -71,19 +71,19 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel x:Name="_StackPanel" Grid.Column="1" Padding="16">
-                <TextBox Text="{x:Bind _AssignmentsViewModel.Title_Input,Mode=TwoWay}" FontSize="16" PlaceholderText="Assignment's Title" BorderThickness="1" Margin="0,0,0,20">
+                <TextBox Text="{Binding Title_Input,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="16" PlaceholderText="Assignment's Title" BorderThickness="1" Margin="0,0,0,20">
                     <TextBox.Header>
                         <TextBlock Text="Title" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                     </TextBox.Header>
                 </TextBox>
 
-                <TextBox Text="{x:Bind _AssignmentsViewModel.Subject_Input,Mode=TwoWay}" FontSize="16" PlaceholderText="Assignment's Subject" BorderThickness="1" Margin="0,0,0,20">
+                <TextBox Text="{Binding Subject_Input,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="16" PlaceholderText="Assignment's Subject" BorderThickness="1" Margin="0,0,0,20">
                     <TextBox.Header>
                         <TextBlock Text="Subject" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                     </TextBox.Header>
                 </TextBox>
 
-                <TextBox Text="{x:Bind _AssignmentsViewModel.Description_Input,Mode=TwoWay}" AcceptsReturn="True" FontSize="16" PlaceholderText="Assignment's Description" BorderThickness="1" Height="200" Margin="0,0,0,20">
+                <TextBox Text="{Binding Description_Input,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" FontSize="16" PlaceholderText="Assignment's Description" BorderThickness="1" Height="200" Margin="0,0,0,20">
                     <TextBox.Header>
                         <TextBlock Text="Description" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                     </TextBox.Header>

@@ -66,18 +66,33 @@ namespace StudentAlpha.ViewModels
             return false;
         }
 
+        public async Task<bool> EditAsync()
+        {
+            if (!string.IsNullOrWhiteSpace(Title_Input) &&
+                !string.IsNullOrWhiteSpace(Description_Input) &&
+                !string.IsNullOrWhiteSpace(Subject_Input) &&
+                DueDate_Input != null)
+            {
+                var assignment = Assignments.First(a => (a == SelectedAssignment));
+                assignment.Title = Title_Input;
+                assignment.Description = Description_Input;
+                assignment.Subject = Subject_Input;
+                assignment.DueDate = DueDate_Input;
+
+                await WriteToFileAsync();
+
+                return true;
+            }
+
+            return false;
+        }
+
         public async void Remove()
         {
             if (SelectedAssignment != null)
             {
-                MessageDialog msg = new MessageDialog("Are you sure to delete?", "Delete Assignment");
-                msg.Commands.Add(new UICommand("Yes", async delegate
-                {
-                    Assignments.Remove(SelectedAssignment);
-                    await WriteToFileAsync();
-                }));
-                msg.Commands.Add(new UICommand("No"));
-                await msg.ShowAsync();
+                Assignments.Remove(SelectedAssignment);
+                await WriteToFileAsync();
             }
         }
 
@@ -93,7 +108,7 @@ namespace StudentAlpha.ViewModels
             try
             {
                 var jsonString = await new FileService().ReadDataFromLocalStorageAsync(ASSIGNMENTS_JSONFILENAME);
-                Assignments = await JsonConvert.DeserializeObjectAsync<ObservableCollection<Assignment>>(jsonString);
+                Assignments = JsonConvert.DeserializeObject<ObservableCollection<Assignment>>(jsonString);
             }
             catch { }
 

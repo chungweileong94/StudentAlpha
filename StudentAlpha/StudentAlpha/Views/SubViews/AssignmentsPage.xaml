@@ -66,8 +66,8 @@
             </CommandBar.Content>
 
             <AppBarButton Icon="Accept" Label="Toggle Status" Click="{x:Bind _AssignmentsViewModel.ChangeStatus}"/>
-            <AppBarButton Icon="Edit" Label="Edit"/>
-            <AppBarButton Icon="Delete" Label="Delete" Click="{x:Bind _AssignmentsViewModel.Remove}"/>
+            <AppBarButton Icon="Edit" Label="Edit" Click="EditAppBarButton_Click"/>
+            <AppBarButton Icon="Delete" Label="Delete" Click="DeleteAppBarButton_Click"/>
         </CommandBar>
 
         <Grid Grid.Row="1" Grid.ColumnSpan="2">

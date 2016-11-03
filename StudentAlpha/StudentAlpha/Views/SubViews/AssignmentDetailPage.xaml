@@ -7,6 +7,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" SizeChanged="Page_SizeChanged">
 
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <ContinuumNavigationTransitionInfo/>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
+
     <Page.TopAppBar>
         <CommandBar Style="{StaticResource CommandBarStyle}">
             <CommandBar.Content>
@@ -16,7 +24,7 @@
             </CommandBar.Content>
 
             <AppBarButton Icon="Accept" Label="Toggle Status" Click="{x:Bind _AssignmentsViewModel.ChangeStatus}"/>
-            <AppBarButton Icon="Edit" Label="Edit"/>
+            <AppBarButton Icon="Edit" Label="Edit" Click="EditAppBarButton_Click"/>
             <AppBarButton Icon="Delete" Label="Delete" Click="DeleteAppBarButton_Click"/>
         </CommandBar>
     </Page.TopAppBar>
