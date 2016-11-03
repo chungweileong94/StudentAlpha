@@ -19,19 +19,18 @@ namespace StudentAlpha.Views.SubViews
         {
             this.InitializeComponent();
 
-            if (_AssignmentsViewModel_Share == null)
-            {
-                _AssignmentsViewModel_Share = new AssignmentsViewModel();
-            }
+
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            _AssignmentsViewModel_Share = await new AssignmentsViewModel().LoadAsync();
+            if (_AssignmentsViewModel_Share == null)
+            {
+                _AssignmentsViewModel_Share = await new AssignmentsViewModel().LoadAsync();
+            }
             _AssignmentsViewModel = _AssignmentsViewModel_Share;
-
             Bindings.Update();
         }
 
