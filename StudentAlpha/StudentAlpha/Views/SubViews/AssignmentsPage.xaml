@@ -5,12 +5,17 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:StudentAlpha.Models"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     x:Class="StudentAlpha.Views.SubViews.AssignmentsPage"
-    mc:Ignorable="d" SizeChanged="Page_SizeChanged">
+    mc:Ignorable="d" SizeChanged="Page_SizeChanged" x:Name="Page">
 
     <Page.Resources>
         <local:DetailVisibilityConverter x:Key="DetailVisibilityConverter"/>
         <local:AssignmentToObjectConverter x:Key="AssignmentToObjectConverter"/>
+        <local:StatusToVisibilityConverter x:Key="StatusToVisibilityConverter"/>
+        <local:StatusToSymbolConverter x:Key="StatusToSymbolConverter"/>
+        <local:StatusToTextConverter x:Key="StatusToTextConverter"/>
+        <local:StatusToColorConverter x:Key="StatusToColorConverter"/>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -89,18 +94,50 @@
                         <Setter Property="BorderBrush" Value="{ThemeResource SystemControlBackgroundAltHighBrush}"/>
                         <Setter Property="BorderThickness" Value=".5"/>
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="0"/>
                     </Style>
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:Assignment">
-                        <StackPanel Padding="8" HorizontalAlignment="Stretch">
-                            <TextBlock Text="{x:Bind Title}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                            <TextBlock Text="{x:Bind Subject}" Opacity=".7" Margin="0,0,0,8"/>
-                            <TextBlock Opacity=".7">
-                                    <Run Text="Due Date: " Foreground="{ThemeResource SystemAccentColor}"/>
-                                    <Run Text="{x:Bind DueDateShortStringFormat}"/>
-                            </TextBlock>
-                        </StackPanel>
+                        <controls:SlidableListItem 
+                            HorizontalAlignment="Stretch"
+                            RightIcon="{x:Bind Status,Mode=OneWay,Converter={StaticResource StatusToSymbolConverter}}" 
+                            RightLabel="{x:Bind Status,Mode=OneWay,Converter={StaticResource StatusToTextConverter}}"
+                            RightBackground="{x:Bind Status,Mode=OneWay,Converter={StaticResource StatusToColorConverter}}"
+                            RightForeground ="White"
+                            ActivationWidth="100"
+                            IsLeftCommandEnabled="False"
+                            IsRightCommandEnabled="True"
+                            IsOffsetLimited="True"
+                            MouseSlidingEnabled="False"
+                            IsPointerReleasedOnSwipingHandled="True"
+                            RightCommandParameter="{Binding}"
+                            SwipeStatusChanged="SlidableListItem_SwipeStatusChanged">
+
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Padding="12,8" HorizontalAlignment="Stretch">
+                                    <TextBlock Text="{x:Bind Title}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                                    <TextBlock Text="{x:Bind Subject}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Opacity=".7" Margin="0,0,0,8"/>
+                                    <TextBlock TextWrapping="NoWrap" TextTrimming="CharacterEllipsis">
+                                        <Run Text="Due Date: " Foreground="{ThemeResource SystemAccentColor}"/>
+                                        <Run Text="{x:Bind DueDateShortStringFormat}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                                <Grid  
+                                    Grid.Column="1"
+                                    Background="{ThemeResource SystemControlHighlightListAccentLowBrush}"
+                                    HorizontalAlignment="Right" 
+                                    Padding="16,0"
+                                    Visibility="{x:Bind Status,Mode=OneWay,Converter={StaticResource StatusToVisibilityConverter}}">
+                                    <SymbolIcon Symbol="Accept"/>
+                                </Grid>
+                            </Grid>
+                        </controls:SlidableListItem>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

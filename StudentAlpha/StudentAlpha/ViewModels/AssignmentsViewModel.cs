@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Data;
+using System.Windows.Input;
 
 namespace StudentAlpha.ViewModels
 {
@@ -98,8 +99,13 @@ namespace StudentAlpha.ViewModels
 
         public async void ChangeStatus()
         {
-            var assignment = Assignments.First(a => (a == SelectedAssignment));
-            assignment.Status = !assignment.Status;
+            await ChangeStatusAsync(SelectedAssignment);
+        }
+
+        public async Task ChangeStatusAsync(Assignment assignment)
+        {
+            var _assignment = Assignments.First(a => (a == assignment));
+            _assignment.Status = !_assignment.Status;
             await WriteToFileAsync();
         }
 

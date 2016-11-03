@@ -7,7 +7,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Navigation;
 using StudentAlpha.ViewModels;
 using Windows.UI.Popups;
-using Windows.UI.Xaml.Media.Animation;
+using Microsoft.Toolkit.Uwp.UI.Controls;
+using Windows.UI.Xaml.Media;
+using Windows.UI;
 
 namespace StudentAlpha.Views.SubViews
 {
@@ -18,8 +20,6 @@ namespace StudentAlpha.Views.SubViews
         public AssignmentsPage()
         {
             this.InitializeComponent();
-
-
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -31,6 +31,7 @@ namespace StudentAlpha.Views.SubViews
                 _AssignmentsViewModel_Share = await new AssignmentsViewModel().LoadAsync();
             }
             _AssignmentsViewModel = _AssignmentsViewModel_Share;
+            DataContext = _AssignmentsViewModel;
             Bindings.Update();
         }
 
@@ -78,7 +79,19 @@ namespace StudentAlpha.Views.SubViews
             msg.Commands.Add(new UICommand("No"));
             await msg.ShowAsync();
         }
+
+        private async void SlidableListItem_SwipeStatusChanged(SlidableListItem sender, SwipeStatusChangedEventArgs args)
+        {
+            if (args.NewValue == SwipeStatus.Idle)
+            {
+                if (args.OldValue == SwipeStatus.SwipingPassedLeftThreshold)
+                {
+                    await _AssignmentsViewModel.ChangeStatusAsync(sender.RightCommandParameter as Assignment);
+                }
+            }
+        }
         #endregion
+
     }
 
     #region Converters
@@ -97,6 +110,45 @@ namespace StudentAlpha.Views.SubViews
         public object Convert(object value, Type targetType, object parameter, string language) => value;
 
         public object ConvertBack(object value, Type targetType, object parameter, string language) => (value == null) ? null : value as Assignment;
+    }
+
+    public class StatusToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language) => (bool)value ? Visibility.Visible : Visibility.Collapsed;
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class StatusToSymbolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language) => (bool)value ? Symbol.Cancel : Symbol.Accept;
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class StatusToTextConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language) => (bool)value ? "Incomplete" : "Complete";
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class StatusToColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language) => (bool)value ? new SolidColorBrush(Colors.Red) : App.Current.Resources["SystemControlHighlightListAccentLowBrush"];
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
     }
     #endregion
 }
