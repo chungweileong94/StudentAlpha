@@ -42,20 +42,6 @@ namespace StudentAlpha.ViewModels
                 new ObservableCollection<TimetableData>(), //fri
                 new ObservableCollection<TimetableData>()  //sat
             };
-
-            //sample data
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    Timetable.Add(new TimetableData()
-            //    {
-            //        Subject = $"Sample Subject {i}",
-            //        Lecture = $"Lecture {i}",
-            //        Venue = $"Sample R{i}",
-            //        Day = DateTime.Now.AddDays(i).DayOfWeek,
-            //        StartTime = DateTime.Now.AddDays(i).TimeOfDay,
-            //        EndTime = DateTime.Now.AddHours(i + 1).TimeOfDay
-            //    });
-            //}
         }
 
         #region Methods
@@ -114,18 +100,16 @@ namespace StudentAlpha.ViewModels
             await WriteToFileAsync();
         }
 
-        public async Task<TimetableViewModel> LoadAsync()
+        public async Task LoadAsync()
         {
             try
             {
                 var jsonString = await new FileService().ReadDataFromLocalStorageAsync(TIMETABLE_JSONFILENAME);
-                Timetable = JsonConvert.DeserializeObject<ObservableCollection<TimetableData>>(jsonString);
+                Timetable = await JsonConvert.DeserializeObjectAsync<ObservableCollection<TimetableData>>(jsonString);
 
                 Reorganize();
             }
             catch { }
-
-            return this;
         }
 
         private async Task WriteToFileAsync()

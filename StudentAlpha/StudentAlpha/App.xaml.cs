@@ -27,10 +27,10 @@ namespace StudentAlpha
         public const string THEME_SETTING = "theme_setting";
         public const string ASSIGNMENTS_JSONFILENAME = "Assignments.json";
         public const string TIMETABLE_JSONFILENAME = "Timetable.json";
-        public const string EVENTS_JSONFILENAME = "Events.json";
         public static Type PreviousPageType = null;
         public static AssignmentsViewModel _AssignmentsViewModel_Share { get; set; }
         public static TimetableViewModel _TimetableViewModel_Share { get; set; }
+        public static HomeViewModel _HomeViewModel_Share { get; set; }
 
         public App()
         {

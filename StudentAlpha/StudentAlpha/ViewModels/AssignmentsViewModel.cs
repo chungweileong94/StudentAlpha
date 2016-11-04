@@ -109,16 +109,14 @@ namespace StudentAlpha.ViewModels
             await WriteToFileAsync();
         }
 
-        public async Task<AssignmentsViewModel> LoadAsync()
+        public async Task LoadAsync()
         {
             try
             {
                 var jsonString = await new FileService().ReadDataFromLocalStorageAsync(ASSIGNMENTS_JSONFILENAME);
-                Assignments = JsonConvert.DeserializeObject<ObservableCollection<Assignment>>(jsonString);
+                Assignments = await JsonConvert.DeserializeObjectAsync<ObservableCollection<Assignment>>(jsonString);
             }
             catch { }
-
-            return this;
         }
 
         private async Task WriteToFileAsync()

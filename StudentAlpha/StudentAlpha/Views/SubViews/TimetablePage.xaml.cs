@@ -9,6 +9,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Navigation;
+using System.Threading.Tasks;
 
 namespace StudentAlpha.Views.SubViews
 {
@@ -26,7 +27,8 @@ namespace StudentAlpha.Views.SubViews
             base.OnNavigatedTo(e);
             if (_TimetableViewModel_Share == null)
             {
-                _TimetableViewModel_Share = await new TimetableViewModel().LoadAsync();
+                _TimetableViewModel_Share = new TimetableViewModel();
+                await Task.Run(async () => await _TimetableViewModel_Share.LoadAsync());
             }
             else
             {

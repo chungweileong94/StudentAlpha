@@ -10,6 +10,7 @@ using Windows.UI.Popups;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI;
+using System.Threading.Tasks;
 
 namespace StudentAlpha.Views.SubViews
 {
@@ -28,7 +29,8 @@ namespace StudentAlpha.Views.SubViews
 
             if (_AssignmentsViewModel_Share == null)
             {
-                _AssignmentsViewModel_Share = await new AssignmentsViewModel().LoadAsync();
+                _AssignmentsViewModel_Share = new AssignmentsViewModel();
+                await Task.Run(async () => await _AssignmentsViewModel_Share.LoadAsync());
             }
             _AssignmentsViewModel = _AssignmentsViewModel_Share;
             DataContext = _AssignmentsViewModel;
@@ -49,10 +51,13 @@ namespace StudentAlpha.Views.SubViews
         {
             if (CommandBarVisualStateGroup.CurrentState.Name == nameof(SmallWidth))
             {
-                if (_AssignmentsViewModel.SelectedAssignment != null)
+                if (_AssignmentsViewModel != null)
                 {
-                    var rootFrame = Window.Current.Content as Frame;
-                    rootFrame.Navigate(typeof(AssignmentDetailPage), _AssignmentsViewModel.SelectedAssignment);
+                    if (_AssignmentsViewModel.SelectedAssignment != null)
+                    {
+                        var rootFrame = Window.Current.Content as Frame;
+                        rootFrame.Navigate(typeof(AssignmentDetailPage), _AssignmentsViewModel.SelectedAssignment);
+                    }
                 }
             }
         }
