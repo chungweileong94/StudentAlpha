@@ -54,7 +54,7 @@
             <PivotItem Header="About">
                 <StackPanel>
                     <TextBlock Text="Version" Foreground="{ThemeResource SystemAccentColor}" Style="{ThemeResource TitleTextBlockStyle}"/>
-                    <TextBlock Text="1.0.0.0"/>
+                    <TextBlock Text="1.1.0.0"/>
                 </StackPanel>
             </PivotItem>
         </Pivot>
