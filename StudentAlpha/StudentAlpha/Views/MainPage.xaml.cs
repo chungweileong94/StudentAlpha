@@ -108,6 +108,8 @@ namespace StudentAlpha.Views
                     MainFrame.Navigate(typeof(SettingsPage));
                     break;
             }
+
+            MainSplitView.IsPaneOpen = false;
         }
 
         private List<RadioButton> allRadioButtons(DependencyObject parent)
@@ -129,5 +131,83 @@ namespace StudentAlpha.Views
             return list;
 
         }
+
+        #region Gesture
+        Grid paneRoot;
+        VisualTransition fromClosedToOpenOverlayLeft_transition;
+
+        private void gestureBorder_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (MainSplitView.DisplayMode != SplitViewDisplayMode.Overlay) { return; }
+
+            setupGestureComponents();
+
+            paneRoot.Visibility = Visibility.Visible;
+
+            if (e.Cumulative.Translation.X >= 0 && e.Cumulative.Translation.X < MainSplitView.OpenPaneLength)
+            {
+                CompositeTransform ct = paneRoot.RenderTransform as CompositeTransform;
+                ct.TranslateX = e.Cumulative.Translation.X - MainSplitView.OpenPaneLength;
+            }
+        }
+
+        private void gestureBorder_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (MainSplitView.DisplayMode != SplitViewDisplayMode.Overlay) { return; }
+
+            setupGestureComponents();
+
+            paneRoot.Visibility = Visibility.Collapsed;
+            CompositeTransform ct = paneRoot.RenderTransform as CompositeTransform;
+
+            if ((ct.TranslateX + MainSplitView.OpenPaneLength) > MainSplitView.OpenPaneLength / 3)
+            {
+                MainSplitView.IsPaneOpen = true;
+                fromClosedToOpenOverlayLeft_transition.Storyboard.SkipToFill();
+            }
+
+            ct.TranslateX = 0;
+        }
+
+        //Helper Method
+        private void setupGestureComponents()
+        {
+            if (paneRoot == null)
+            {
+                Grid grid = FindVisualChild<Grid>(MainSplitView);
+                paneRoot = grid.FindName("PaneRoot") as Grid;
+
+                if (fromClosedToOpenOverlayLeft_transition == null)
+                {
+                    var stateGroups = VisualStateManager.GetVisualStateGroups(grid);
+                    var transitions = stateGroups[0].Transitions;
+                    fromClosedToOpenOverlayLeft_transition = transitions.Where(t => t.From == "Closed" && t.To == "OpenOverlayLeft").First();
+                }
+            }
+        }
+
+        private childItem FindVisualChild<childItem>(DependencyObject obj)
+        where childItem : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+
+                if (child != null && child is childItem)
+                    return (childItem)child;
+                else
+                {
+                    childItem childOfChild = FindVisualChild<childItem>(child);
+
+                    if (childOfChild != null)
+                        return childOfChild;
+                }
+            }
+
+            return null;
+        }
+        #endregion
     }
 }

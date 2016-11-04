@@ -72,6 +72,7 @@ namespace StudentAlpha.Views.SubViews
 
         private async void TimetableDetailPage_BackRequested(object sender, BackRequestedEventArgs e)
         {
+            e.Handled = true;
             if (isDiffer())
             {
                 MessageDialog msg = new MessageDialog("All the changes will be discard. Are you sure to leave?", "Leave");
@@ -79,7 +80,6 @@ namespace StudentAlpha.Views.SubViews
                 {
                     if (Frame.CanGoBack)
                     {
-                        e.Handled = true;
                         Frame.GoBack();
                     }
                 }));
@@ -90,7 +90,6 @@ namespace StudentAlpha.Views.SubViews
             {
                 if (Frame.CanGoBack)
                 {
-                    e.Handled = true;
                     Frame.GoBack();
                 }
             }
