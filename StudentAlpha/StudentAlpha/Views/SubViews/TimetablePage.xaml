@@ -16,7 +16,6 @@
             <Setter Property="ShowsScrollingPlaceholders" Value="False"/>
             <Setter Property="ItemContainerTransitions" Value="{x:Null}"/>
         </Style>
-
         <Style x:Name="TimetableGridViewItemStyle" TargetType="GridViewItem">
             <Setter Property="Background" Value="{ThemeResource SystemControlHighlightListAccentLowBrush}"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -36,13 +35,14 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
         <DataTemplate x:Name="NoClassText">
             <StackPanel Opacity=".7">
                 <TextBlock Text="&#xE76E;" FontFamily="Segoe MDL2 Assets" FontSize="32" HorizontalAlignment="Center" Margin="0,0,0,8"/>
                 <TextBlock Text="No Class" Style="{ThemeResource TitleTextBlockStyle}"/>
             </StackPanel>
         </DataTemplate>
+
+        <local:NoClassTextVisibilityCovnerter x:Key="NoClassTextVisibilityCovnerter"/>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -77,9 +77,10 @@
             </CommandBar.Content>
 
             <AppBarButton Icon="Add" Label="Add"/>
+            <AppBarButton Icon="GoToToday" Label="Today" Click="TodayAppBarButton_Click"/>
         </CommandBar>
 
-        <Pivot Grid.Row="1" Loaded="Pivot_Loaded" Margin="12">
+        <Pivot x:Name="TimetablePivot" Grid.Row="1" Loaded="Pivot_Loaded" Margin="12">
             <Pivot.Transitions>
                 <TransitionCollection>
                     <EntranceThemeTransition FromVerticalOffset="-40"/>
@@ -223,44 +224,44 @@
             </Pivot.Resources>
             <PivotItem Header="Sunday">
                 <Grid>
-                    <ContentPresenter ContentTemplate="{StaticResource NoClassText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <GridView ItemsSource="{x:Bind list}" Style="{StaticResource TimetableGridViewStyle}" SizeChanged="GridView_SizeChanged" ContainerContentChanging="GridView_ContainerContentChanging"/>
+                    <ContentPresenter ContentTemplate="{StaticResource NoClassText}" Visibility="{x:Bind _TimetableViewModel.Timetables[0],Mode=OneWay,Converter={StaticResource NoClassTextVisibilityCovnerter}}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <GridView ItemsSource="{x:Bind _TimetableViewModel.Timetables[0],Mode=OneWay}" Style="{StaticResource TimetableGridViewStyle}" SizeChanged="GridView_SizeChanged" ContainerContentChanging="GridView_ContainerContentChanging"/>
                 </Grid>
             </PivotItem>
             <PivotItem Header="Monday">
                 <Grid>
-                    <ContentPresenter ContentTemplate="{StaticResource NoClassText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <GridView ItemsSource="{x:Bind list}" Style="{StaticResource TimetableGridViewStyle}" SizeChanged="GridView_SizeChanged" ContainerContentChanging="GridView_ContainerContentChanging"/>
+                    <ContentPresenter ContentTemplate="{StaticResource NoClassText}" Visibility="{x:Bind _TimetableViewModel.Timetables[1],Mode=OneWay,Converter={StaticResource NoClassTextVisibilityCovnerter}}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <GridView ItemsSource="{x:Bind _TimetableViewModel.Timetables[1],Mode=OneWay}" Style="{StaticResource TimetableGridViewStyle}" SizeChanged="GridView_SizeChanged" ContainerContentChanging="GridView_ContainerContentChanging"/>
                 </Grid>
             </PivotItem>
             <PivotItem Header="Tuesday">
                 <Grid>
-                    <ContentPresenter ContentTemplate="{StaticResource NoClassText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <GridView ItemsSource="{x:Bind list}" Style="{StaticResource TimetableGridViewStyle}" SizeChanged="GridView_SizeChanged" ContainerContentChanging="GridView_ContainerContentChanging"/>
+                    <ContentPresenter ContentTemplate="{StaticResource NoClassText}" Visibility="{x:Bind _TimetableViewModel.Timetables[2],Mode=OneWay,Converter={StaticResource NoClassTextVisibilityCovnerter}}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <GridView ItemsSource="{x:Bind _TimetableViewModel.Timetables[2],Mode=OneWay}" Style="{StaticResource TimetableGridViewStyle}" SizeChanged="GridView_SizeChanged" ContainerContentChanging="GridView_ContainerContentChanging"/>
                 </Grid>
             </PivotItem>
             <PivotItem Header="Wednesday">
                 <Grid>
-                    <ContentPresenter ContentTemplate="{StaticResource NoClassText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <GridView ItemsSource="{x:Bind list}" Style="{StaticResource TimetableGridViewStyle}" SizeChanged="GridView_SizeChanged" ContainerContentChanging="GridView_ContainerContentChanging"/>
+                    <ContentPresenter ContentTemplate="{StaticResource NoClassText}" Visibility="{x:Bind _TimetableViewModel.Timetables[3],Mode=OneWay,Converter={StaticResource NoClassTextVisibilityCovnerter}}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <GridView ItemsSource="{x:Bind _TimetableViewModel.Timetables[3],Mode=OneWay}" Style="{StaticResource TimetableGridViewStyle}" SizeChanged="GridView_SizeChanged" ContainerContentChanging="GridView_ContainerContentChanging"/>
                 </Grid>
             </PivotItem>
             <PivotItem Header="Thusday">
                 <Grid>
-                    <ContentPresenter ContentTemplate="{StaticResource NoClassText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <GridView ItemsSource="{x:Bind list}" Style="{StaticResource TimetableGridViewStyle}" SizeChanged="GridView_SizeChanged" ContainerContentChanging="GridView_ContainerContentChanging"/>
+                    <ContentPresenter ContentTemplate="{StaticResource NoClassText}" Visibility="{x:Bind _TimetableViewModel.Timetables[4],Mode=OneWay,Converter={StaticResource NoClassTextVisibilityCovnerter}}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <GridView ItemsSource="{x:Bind _TimetableViewModel.Timetables[4],Mode=OneWay}" Style="{StaticResource TimetableGridViewStyle}" SizeChanged="GridView_SizeChanged" ContainerContentChanging="GridView_ContainerContentChanging"/>
                 </Grid>
             </PivotItem>
             <PivotItem Header="Friday">
                 <Grid>
-                    <ContentPresenter ContentTemplate="{StaticResource NoClassText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <GridView ItemsSource="{x:Bind list}" Style="{StaticResource TimetableGridViewStyle}" SizeChanged="GridView_SizeChanged" ContainerContentChanging="GridView_ContainerContentChanging"/>
+                    <ContentPresenter ContentTemplate="{StaticResource NoClassText}"  Visibility="{x:Bind _TimetableViewModel.Timetables[5],Mode=OneWay,Converter={StaticResource NoClassTextVisibilityCovnerter}}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <GridView ItemsSource="{x:Bind _TimetableViewModel.Timetables[5],Mode=OneWay}" Style="{StaticResource TimetableGridViewStyle}" SizeChanged="GridView_SizeChanged" ContainerContentChanging="GridView_ContainerContentChanging"/>
                 </Grid>
             </PivotItem>
             <PivotItem Header="Saturday">
                 <Grid>
-                    <ContentPresenter ContentTemplate="{StaticResource NoClassText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <GridView ItemsSource="{x:Bind list}" Style="{StaticResource TimetableGridViewStyle}" SizeChanged="GridView_SizeChanged" ContainerContentChanging="GridView_ContainerContentChanging"/>
+                    <ContentPresenter ContentTemplate="{StaticResource NoClassText}" Visibility="{x:Bind _TimetableViewModel.Timetables[6],Mode=OneWay,Converter={StaticResource NoClassTextVisibilityCovnerter}}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <GridView ItemsSource="{x:Bind _TimetableViewModel.Timetables[6],Mode=OneWay}" Style="{StaticResource TimetableGridViewStyle}" SizeChanged="GridView_SizeChanged" ContainerContentChanging="GridView_ContainerContentChanging"/>
                 </Grid>
             </PivotItem>
         </Pivot>

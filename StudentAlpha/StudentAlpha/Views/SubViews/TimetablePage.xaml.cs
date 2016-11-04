@@ -1,6 +1,8 @@
 ﻿using StudentAlpha.Models;
+using StudentAlpha.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -20,24 +22,18 @@ namespace StudentAlpha.Views.SubViews
 {
     public sealed partial class TimetablePage : Page
     {
-        public List<TimetableData> list { get; set; }
+        public TimetableViewModel _TimetableViewModel { get; set; }
 
         public TimetablePage()
         {
             this.InitializeComponent();
+        }
 
-            list = new List<TimetableData>();
-
-            for (int i = 0; i < 10; i++)
-            {
-                list.Add(new TimetableData()
-                {
-                    Subject = $"Subject {i}",
-                    StartDateTime = DateTime.Now,
-                    EndDateTime = DateTime.Now.AddHours(1),
-                    Lecture = $"Lecture {i}"
-                });
-            }
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            _TimetableViewModel = await new TimetableViewModel().LoadAsync();
+            Bindings.Update();
         }
 
         private void Pivot_Loaded(object sender, RoutedEventArgs e)
@@ -108,6 +104,21 @@ namespace StudentAlpha.Views.SubViews
                 visual.StartAnimation("Opacity", fadeAnimation);
             }
             itemContainer.Loaded -= ItemContainer_Loaded;
+        }
+
+        private void TodayAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            TimetablePivot.SelectedIndex = (int)DateTime.Now.DayOfWeek;
+        }
+    }
+
+    public class NoClassTextVisibilityCovnerter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language) => ((ObservableCollection<TimetableData>)value).Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
         }
     }
 }
