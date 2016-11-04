@@ -2,21 +2,12 @@
 using StudentAlpha.Models;
 using StudentAlpha.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
 using System.Numerics;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Hosting;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace StudentAlpha.Views.SubViews
@@ -37,10 +28,15 @@ namespace StudentAlpha.Views.SubViews
             {
                 _TimetableViewModel_Share = await new TimetableViewModel().LoadAsync();
             }
+            else
+            {
+                _TimetableViewModel_Share.Reorganize();
+            }
             _TimetableViewModel = _TimetableViewModel_Share;
             Bindings.Update();
         }
 
+        #region Events
         private void Pivot_Loaded(object sender, RoutedEventArgs e)
         {
             var s = sender as Pivot;
@@ -121,6 +117,13 @@ namespace StudentAlpha.Views.SubViews
             var rootFrame = Window.Current.Content as Frame;
             rootFrame.Navigate(typeof(TimetableDetailPage), e.ClickedItem);
         }
+
+        private void AddAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            var rootFrame = Window.Current.Content as Frame;
+            rootFrame.Navigate(typeof(TimetableAddPage));
+        }
+        #endregion
     }
 
     public class NoClassTextVisibilityCovnerter : IValueConverter

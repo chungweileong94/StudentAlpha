@@ -65,7 +65,6 @@ namespace StudentAlpha.ViewModels
         {
             if (!string.IsNullOrWhiteSpace(Subject_Input) &&
                 !string.IsNullOrWhiteSpace(Venue_Input) &&
-                !string.IsNullOrWhiteSpace(Lecture_Input) &&
                 StartTime_Input != null &&
                 EndTime_Input != null)
             {
@@ -74,6 +73,7 @@ namespace StudentAlpha.ViewModels
                     Subject = Subject_Input,
                     Venue = Venue_Input,
                     Lecture = Lecture_Input,
+                    Day = Day_Input,
                     StartTime = StartTime_Input,
                     EndTime = EndTime_Input
                 });
@@ -93,12 +93,7 @@ namespace StudentAlpha.ViewModels
                 var jsonString = await new FileService().ReadDataFromLocalStorageAsync(TIMETABLE_JSONFILENAME);
                 Timetable = JsonConvert.DeserializeObject<ObservableCollection<TimetableData>>(jsonString);
 
-                //devide into day of week
-                foreach (var c in Timetable)
-                {
-                    Timetables[(int)c.Day].Add(c);
-                    Timetables[(int)c.Day].OrderBy(v => v.StartTime);
-                }
+                Reorganize();
             }
             catch { }
 
@@ -111,6 +106,20 @@ namespace StudentAlpha.ViewModels
             await new FileService().WriteDataToLocalStorageAsync(TIMETABLE_JSONFILENAME, jsonString);
         }
 
+        public void Reorganize()
+        {
+            foreach (var t in Timetables)
+            {
+                t.Clear();
+            }
+
+            //devide into day of week
+            foreach (var c in Timetable)
+            {
+                Timetables[(int)c.Day].Add(c);
+                Timetables[(int)c.Day].OrderBy(v => v.StartTime);
+            }
+        }
         #endregion
 
         #region INotifyPropertyChanged Helper
@@ -133,11 +142,12 @@ namespace StudentAlpha.ViewModels
         #endregion
     }
 
-    #region Convertors
-    public class DateTimeToDateTimeToDateTimeOffsetConverter : IValueConverter
+    #region Converters
+    public class DayOfWeekToIntConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, string language) => new DateTimeOffset((DateTime)value);
-        public object ConvertBack(object value, Type targetType, object parameter, string language) => ((DateTimeOffset)value).DateTime;
+        public object Convert(object value, Type targetType, object parameter, string language) => (int)value;
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language) => (DayOfWeek)value;
     }
     #endregion
 }

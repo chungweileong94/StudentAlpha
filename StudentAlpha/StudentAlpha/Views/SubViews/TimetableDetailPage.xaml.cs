@@ -77,16 +77,4 @@ namespace StudentAlpha.Views.SubViews
             }
         }
     }
-
-    #region Converters
-    public class DayOfWeekToIntConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, string language) => (int)value;
-
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            throw new NotImplementedException();
-        }
-    }
-    #endregion
 }

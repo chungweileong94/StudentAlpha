@@ -3,9 +3,22 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:StudentAlpha.Views.SubViews"
+    xmlns:vm="using:StudentAlpha.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <ContinuumNavigationTransitionInfo/>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
+
+    <Page.Resources>
+        <vm:DayOfWeekToIntConverter x:Key="DayOfWeekToIntConverter"/>
+    </Page.Resources>
 
     <Page.TopAppBar>
         <CommandBar Style="{ThemeResource CommandBarStyle}">
@@ -17,7 +30,91 @@
         </CommandBar>
     </Page.TopAppBar>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Icon="Accept" Label="Create" Click="CreateAppBarButton_Click">
+                <FlyoutBase.AttachedFlyout>
+                    <Flyout>
+                        <TextBlock Text="Subject, Venue, Day and Time are required"/>
+                    </Flyout>
+                </FlyoutBase.AttachedFlyout>
+            </AppBarButton>
+            <AppBarButton Icon="Cancel" Label="Cancel" Click="CancelAppBarButton_Click"/>
+        </CommandBar>
+    </Page.BottomAppBar>
 
-    </Grid>
+    <ScrollViewer Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="LargeWidth">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720"/>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="SmallWidth">
+                    <VisualState.Setters>
+                        <Setter Target="_StackPanel.(Grid.Column)" Value="0"/>
+                        <Setter Target="_StackPanel.(Grid.ColumnSpan)" Value="3"/>
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel x:Name="_StackPanel" Grid.Column="1" Padding="16">
+                <TextBox Text="{Binding Subject_Input,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="16" PlaceholderText="Subject" BorderThickness="1" Margin="0,0,0,20">
+                    <TextBox.Header>
+                        <TextBlock Text="Suject" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                    </TextBox.Header>
+                </TextBox>
+
+                <TextBox Text="{Binding Lecture_Input,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="16" PlaceholderText="Lecture" BorderThickness="1" Margin="0,0,0,20">
+                    <TextBox.Header>
+                        <TextBlock Text="Lecture" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                    </TextBox.Header>
+                </TextBox>
+
+                <TextBox Text="{Binding Venue_Input,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" FontSize="16" PlaceholderText="Venue" BorderThickness="1" Margin="0,0,0,20">
+                    <TextBox.Header>
+                        <TextBlock Text="Venue" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                    </TextBox.Header>
+                </TextBox>
+
+                <ComboBox SelectedIndex="{x:Bind _TimetableViewModel.Day_Input,Mode=TwoWay,Converter={StaticResource DayOfWeekToIntConverter}}" PlaceholderText="Day" BorderThickness="1" Margin="0,0,0,20">
+                    <ComboBox.Header>
+                        <TextBlock Text="Day" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                    </ComboBox.Header>
+
+                    <ComboBoxItem Content="Sunday"/>
+                    <ComboBoxItem Content="Monday"/>
+                    <ComboBoxItem Content="Tuesday"/>
+                    <ComboBoxItem Content="Wednesday"/>
+                    <ComboBoxItem Content="Thusday"/>
+                    <ComboBoxItem Content="Friday"/>
+                    <ComboBoxItem Content="Saturday"/>
+                </ComboBox>
+
+                <TimePicker Time="{x:Bind _TimetableViewModel.StartTime_Input,Mode=TwoWay}" HorizontalAlignment="Left" Margin="0,0,0,20">
+                    <TimePicker.Header>
+                        <TextBlock Text="Start Date" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                    </TimePicker.Header>
+                </TimePicker>
+
+                <TimePicker Time="{x:Bind _TimetableViewModel.EndTime_Input,Mode=TwoWay}" HorizontalAlignment="Left">
+                    <TimePicker.Header>
+                        <TextBlock Text="End Date" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                    </TimePicker.Header>
+                </TimePicker>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </Page>

@@ -76,7 +76,7 @@
                 </Grid>
             </CommandBar.Content>
 
-            <AppBarButton Icon="Add" Label="Add"/>
+            <AppBarButton Icon="Add" Label="Add" Click="AddAppBarButton_Click"/>
             <AppBarButton Icon="GoToToday" Label="Today" Click="TodayAppBarButton_Click"/>
         </CommandBar>
 
