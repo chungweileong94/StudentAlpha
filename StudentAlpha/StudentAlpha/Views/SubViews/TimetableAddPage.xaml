@@ -105,13 +105,13 @@
 
                 <TimePicker Time="{x:Bind _TimetableViewModel.StartTime_Input,Mode=TwoWay}" HorizontalAlignment="Left" Margin="0,0,0,20">
                     <TimePicker.Header>
-                        <TextBlock Text="Start Date" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                        <TextBlock Text="Start Time" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                     </TimePicker.Header>
                 </TimePicker>
 
                 <TimePicker Time="{x:Bind _TimetableViewModel.EndTime_Input,Mode=TwoWay}" HorizontalAlignment="Left">
                     <TimePicker.Header>
-                        <TextBlock Text="End Date" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                        <TextBlock Text="End Time" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                     </TimePicker.Header>
                 </TimePicker>
             </StackPanel>

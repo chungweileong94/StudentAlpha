@@ -101,9 +101,6 @@ namespace StudentAlpha.Views
                 case "Assignments":
                     MainFrame.Navigate(typeof(AssignmentsPage));
                     break;
-                case "Events":
-                    MainFrame.Navigate(typeof(EventsPage));
-                    break;
                 case "Settings":
                     MainFrame.Navigate(typeof(SettingsPage));
                     break;

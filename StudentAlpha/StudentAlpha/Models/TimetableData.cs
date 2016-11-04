@@ -72,7 +72,6 @@ namespace StudentAlpha.Models
             set { Set(ref _Day, value); }
         }
 
-
         #region INotifyPropertyChanged Helper
         public event PropertyChangedEventHandler PropertyChanged;
 

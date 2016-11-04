@@ -11,7 +11,6 @@
         <Style x:Key="PanelGridStyle" TargetType="Grid">
             <Setter Property="Margin" Value="12"/>
             <Setter Property="Padding" Value="16"/>
-            <Setter Property="Height" Value="300"/>
             <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundBaseLowBrush}"/>
         </Style>
     </Page.Resources>
@@ -32,6 +31,10 @@
                 <VisualState x:Name="SmallWidth">
                     <VisualState.Setters>
                         <Setter Target="TopCommandBar.(UIElement.Margin)" Value="48,0,0,0"/>
+                        <Setter Target="TimetableGrid.(Grid.ColumnSpan)" Value="2"/>
+                        <Setter Target="AssignmentsGrid.(Grid.ColumnSpan)" Value="2"/>
+                        <Setter Target="AssignmentsGrid.(Grid.Column)" Value="0"/>
+                        <Setter Target="AssignmentsGrid.(Grid.Row)" Value="2"/>
                     </VisualState.Setters>
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="0"/>
@@ -41,27 +44,11 @@
             <VisualStateGroup x:Name="ContentVisualStateGroup">
                 <VisualState x:Name="LargeContentWidth">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="880"/>
-                    </VisualState.StateTriggers>
-                </VisualState>
-                <VisualState x:Name="MediumContentWidth">
-                    <VisualState.Setters>
-                        <Setter Target="TimetableGrid.(FrameworkElement.Width)" Value="300"/>
-                        <Setter Target="PageHeader.(FrameworkElement.HorizontalAlignment)" Value="center"/>
-                    </VisualState.Setters>
-                    <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="800"/>
                     </VisualState.StateTriggers>
                 </VisualState>
                 <VisualState x:Name="SmallContentWidth">
                     <VisualState.Setters>
-                        <Setter Target="TimetableGrid.(RelativePanel.AlignRightWithPanel)" Value="true"/>
-                        <Setter Target="EventsGrid.(RelativePanel.RightOf)" Value=""/>
-                        <Setter Target="EventsGrid.(RelativePanel.Below)" Value="TimetableGrid"/>
-                        <Setter Target="EventsGrid.(RelativePanel.AlignTopWithPanel)" Value="False"/>
-                        <Setter Target="EventsGrid.(RelativePanel.AlignLeftWithPanel)" Value="True"/>
-                        <Setter Target="AssignmentsGrid.(RelativePanel.Below)" Value="EventsGrid"/>
-                        <Setter Target="TimetableGrid.(FrameworkElement.Width)" Value="NaN"/>
                         <Setter Target="PageHeader.(FrameworkElement.HorizontalAlignment)" Value="center"/>
                     </VisualState.Setters>
                     <VisualState.StateTriggers>
@@ -77,16 +64,24 @@
                     <TextBlock Text="Home" Style="{StaticResource CommandBarTitleTextBlockStyle}"/>
                 </Grid>
             </CommandBar.Content>
-
-            <AppBarButton Icon="Refresh" Label="Refresh"/>
         </CommandBar>
 
         <!--Content-->
         <ScrollViewer Grid.Row="1">
             <StackPanel Margin="12">
                 <TextBlock x:Name="PageHeader" Text="Today's Glance" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="12"/>
-                <RelativePanel>
-                    <Grid x:Name="TimetableGrid" Width="400" Style="{StaticResource PanelGridStyle}" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid x:Name="TimetableGrid" Style="{StaticResource PanelGridStyle}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
@@ -132,50 +127,7 @@
                             </ListViewItem>
                         </ListView>
                     </Grid>
-                    <Grid x:Name="EventsGrid" Style="{StaticResource PanelGridStyle}" RelativePanel.RightOf="TimetableGrid" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="Events" Foreground="{ThemeResource SystemAccentColor}" Style="{ThemeResource TitleTextBlockStyle}"/>
-
-                        <GridView Grid.Row="1">
-                            <GridViewItem Width="200" HorizontalContentAlignment="Left" Padding="0,0,0,12">
-                                <StackPanel Margin="8">
-                                    <TextBlock Text="Event Title 1" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                                    <TextBlock Opacity=".7">
-                                        <Run Text="9:00 AM"/>
-                                        <Run Text=" - "/>
-                                        <Run Text="11:00 AM"/>
-                                    </TextBlock>
-                                    <TextBlock Text="Location" Foreground="{ThemeResource SystemAccentColor}" Opacity=".7" Margin="0,8,0,0"/>
-                                </StackPanel>
-                            </GridViewItem>
-                            <GridViewItem Width="200" HorizontalContentAlignment="Left" Padding="0,0,0,12">
-                                <StackPanel Margin="8">
-                                    <TextBlock Text="Event Title 2" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                                    <TextBlock Opacity=".7">
-                                        <Run Text="9:00 AM"/>
-                                        <Run Text=" - "/>
-                                        <Run Text="11:00 AM"/>
-                                    </TextBlock>
-                                    <TextBlock Text="Location" Foreground="{ThemeResource SystemAccentColor}" Opacity=".7" Margin="0,8,0,0"/>
-                                </StackPanel>
-                            </GridViewItem>
-                            <GridViewItem Width="200" HorizontalContentAlignment="Left" Padding="0,0,0,12">
-                                <StackPanel Margin="8">
-                                    <TextBlock Text="Event Title 3" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                                    <TextBlock Opacity=".7">
-                                        <Run Text="9:00 AM"/>
-                                        <Run Text=" - "/>
-                                        <Run Text="11:00 AM"/>
-                                    </TextBlock>
-                                    <TextBlock Text="Location" Foreground="{ThemeResource SystemAccentColor}" Opacity=".7" Margin="0,8,0,0"/>
-                                </StackPanel>
-                            </GridViewItem>
-                        </GridView>
-                    </Grid>
-                    <Grid x:Name="AssignmentsGrid" Style="{StaticResource PanelGridStyle}" Height="auto" MinHeight="300" RelativePanel.Below="TimetableGrid" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                    <Grid x:Name="AssignmentsGrid" Grid.Column="1" Style="{StaticResource PanelGridStyle}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
@@ -218,7 +170,7 @@
                             </GridViewItem>
                         </GridView>
                     </Grid>
-                </RelativePanel>
+                </Grid>
             </StackPanel>
         </ScrollViewer>
     </Grid>

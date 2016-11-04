@@ -55,12 +55,6 @@
                                 Style="{StaticResource NavRadioButtonStyle}"
                                 Click="NavButton_Click"/>
                             <RadioButton 
-                                Content="Events"
-                                Tag="&#xE787;" 
-                                GroupName="Nav"
-                                Style="{StaticResource NavRadioButtonStyle}"
-                                Click="NavButton_Click"/>
-                            <RadioButton 
                                 Content="Assignments"
                                 Tag="&#xE8F1;" 
                                 GroupName="Nav"
