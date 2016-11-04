@@ -15,22 +15,47 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using StudentAlpha.Models;
+using StudentAlpha.ViewModels;
 
 namespace StudentAlpha.Views.SubViews
 {
     public sealed partial class TimetableDetailPage : Page
     {
+        public TimetableViewModel _TimetableViewModel { get; set; }
         public TimetableData _Class { get; set; }
 
         public TimetableDetailPage()
         {
             this.InitializeComponent();
+
+            _TimetableViewModel = _TimetableViewModel_Share;
+
+            switch ((int)_LocalSettings.Values[THEME_SETTING])
+            {
+                case 0:
+                default:
+                    RequestedTheme = ElementTheme.Default;
+                    break;
+                case 1:
+                    RequestedTheme = ElementTheme.Light;
+                    break;
+                case 2:
+                    RequestedTheme = ElementTheme.Dark;
+                    break;
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             _Class = e.Parameter as TimetableData;
+            _TimetableViewModel.Subject_Input = _Class.Subject;
+            _TimetableViewModel.Lecture_Input = _Class.Lecture;
+            _TimetableViewModel.Venue_Input = _Class.Venue;
+            _TimetableViewModel.Day_Input = _Class.Day;
+            _TimetableViewModel.StartTime_Input = _Class.StartTime;
+            _TimetableViewModel.EndTime_Input = _Class.EndTime;
+
             PreviousPageType = typeof(TimetablePage);
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = Frame.CanGoBack ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
             SystemNavigationManager.GetForCurrentView().BackRequested += TimetableDetailPage_BackRequested;
@@ -52,4 +77,16 @@ namespace StudentAlpha.Views.SubViews
             }
         }
     }
+
+    #region Converters
+    public class DayOfWeekToIntConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language) => (int)value;
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    #endregion
 }

@@ -28,25 +28,25 @@ namespace StudentAlpha.Models
             set { Set(ref _Venue, value); }
         }
 
-        private DateTime _StartDateTime;
-        public DateTime StartDateTime
+        private TimeSpan _StartTime;
+        public TimeSpan StartTime
         {
-            get { return _StartDateTime; }
+            get { return _StartTime; }
             set
             {
-                Set(ref _StartDateTime, value);
-                StartTimeStringFormat = _StartDateTime.ToString("h:mm tt");
+                Set(ref _StartTime, value);
+                StartTimeStringFormat = new DateTime().Add(_StartTime).ToString("h:mm tt");
             }
         }
 
-        private DateTime _EndDateTime;
-        public DateTime EndDateTime
+        private TimeSpan _EndTime;
+        public TimeSpan EndTime
         {
-            get { return _EndDateTime; }
+            get { return _EndTime; }
             set
             {
-                Set(ref _EndDateTime, value);
-                EndTimeStringFormat = _EndDateTime.ToString("h:mm tt");
+                Set(ref _EndTime, value);
+                EndTimeStringFormat = new DateTime().Add(_EndTime).ToString("h:mm tt");
             }
         }
 
@@ -63,6 +63,15 @@ namespace StudentAlpha.Models
             get { return _EndTimeStringFormat; }
             set { Set(ref _EndTimeStringFormat, value); }
         }
+
+        private DayOfWeek _Day;
+
+        public DayOfWeek Day
+        {
+            get { return _Day; }
+            set { Set(ref _Day, value); }
+        }
+
 
         #region INotifyPropertyChanged Helper
         public event PropertyChangedEventHandler PropertyChanged;

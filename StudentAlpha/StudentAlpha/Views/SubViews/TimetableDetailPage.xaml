@@ -15,6 +15,16 @@
         </TransitionCollection>
     </Page.Transitions>
 
+    <Page.Resources>
+        <Style x:Name="DetailTextBoxStyle" TargetType="TextBox">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Setter Property="FontWeight" Value="ExtraLight"/>
+        </Style>
+
+        <local:DayOfWeekToIntConverter x:Key="DayOfWeekToIntConverter"/>
+    </Page.Resources>
+
     <Page.TopAppBar>
         <CommandBar Style="{StaticResource CommandBarStyle}">
             <CommandBar.Content>
@@ -22,10 +32,60 @@
                     <TextBlock Text="Class Detail" Style="{StaticResource CommandBarTitleTextBlockStyle}"/>
                 </Grid>
             </CommandBar.Content>
+
+            <AppBarButton Icon="Save" Label="Save"/>
         </CommandBar>
     </Page.TopAppBar>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <ScrollViewer Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" VerticalScrollBarVisibility="Auto">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="LargeWidth">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720"/>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="SmallWidth">
+                    <VisualState.Setters>
+                        <Setter Target="_StackPanel.(Grid.Column)" Value="0"/>
+                        <Setter Target="_StackPanel.(Grid.ColumnSpan)" Value="3"/>
+                        <Setter Target="stackPanel.(StackPanel.Orientation)" Value="Vertical"/>
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
-    </Grid>
+        <StackPanel Padding="16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel x:Name="_StackPanel">
+                    <TextBox Text="{x:Bind _TimetableViewModel.Subject_Input,Mode=TwoWay}" PlaceholderText="Subject" FontSize="32" Style="{StaticResource DetailTextBoxStyle}"/>
+                    <TextBox Text="{x:Bind _TimetableViewModel.Lecture_Input,Mode=TwoWay}" PlaceholderText="Lecture" FontSize="24" Style="{StaticResource DetailTextBoxStyle}"/>
+                    <TextBox Text="{x:Bind _TimetableViewModel.Venue_Input,Mode=TwoWay}" PlaceholderText="Venue" FontSize="18" Style="{StaticResource DetailTextBoxStyle}"/>
+                </StackPanel>
+            </Grid>
+
+            <ComboBox SelectedIndex="{x:Bind _TimetableViewModel.Day_Input,Mode=TwoWay,Converter={StaticResource DayOfWeekToIntConverter}}" PlaceholderText="Day" BorderThickness="1" Margin="0,20,0,8">
+                <ComboBoxItem Content="Sunday"/>
+                <ComboBoxItem Content="Monday"/>
+                <ComboBoxItem Content="Tuesday"/>
+                <ComboBoxItem Content="Wednesday"/>
+                <ComboBoxItem Content="Thusday"/>
+                <ComboBoxItem Content="Friday"/>
+                <ComboBoxItem Content="Saturday"/>
+            </ComboBox>
+
+            <StackPanel x:Name="stackPanel" Orientation="Horizontal">
+                <TimePicker Header="Start Time" Time="{x:Bind _TimetableViewModel.StartTime_Input}" Margin="0,0,20,0"/>
+                <TimePicker Header="End Time" Time="{x:Bind _TimetableViewModel.EndTime_Input}"/>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
 </Page>

@@ -25,8 +25,9 @@ namespace StudentAlpha.ViewModels
         public string Subject_Input { get; set; }
         public string Venue_Input { get; set; }
         public string Lecture_Input { get; set; }
-        public DateTime StartDateTime_Input { get; set; } = DateTime.Now;
-        public DateTime EndDateTime_Input { get; set; } = DateTime.Now;
+        public DayOfWeek Day_Input { get; set; }
+        public TimeSpan StartTime_Input { get; set; } = DateTime.Now.TimeOfDay;
+        public TimeSpan EndTime_Input { get; set; } = DateTime.Now.TimeOfDay;
         #endregion
         #endregion
 
@@ -45,16 +46,18 @@ namespace StudentAlpha.ViewModels
             };
 
             //sample data
-            for (int i = 0; i < 10; i++)
-            {
-                Timetable.Add(new TimetableData()
-                {
-                    Subject = $"Sample Subject {i}",
-                    Venue = $"Sample R{i}",
-                    StartDateTime = DateTime.Now.AddDays(i),
-                    EndDateTime = DateTime.Now.AddHours(i + 1)
-                });
-            }
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    Timetable.Add(new TimetableData()
+            //    {
+            //        Subject = $"Sample Subject {i}",
+            //        Lecture = $"Lecture {i}",
+            //        Venue = $"Sample R{i}",
+            //        Day = DateTime.Now.AddDays(i).DayOfWeek,
+            //        StartTime = DateTime.Now.AddDays(i).TimeOfDay,
+            //        EndTime = DateTime.Now.AddHours(i + 1).TimeOfDay
+            //    });
+            //}
         }
 
         #region Methods
@@ -63,16 +66,16 @@ namespace StudentAlpha.ViewModels
             if (!string.IsNullOrWhiteSpace(Subject_Input) &&
                 !string.IsNullOrWhiteSpace(Venue_Input) &&
                 !string.IsNullOrWhiteSpace(Lecture_Input) &&
-                StartDateTime_Input != null &&
-                EndDateTime_Input != null)
+                StartTime_Input != null &&
+                EndTime_Input != null)
             {
                 Timetable.Add(new TimetableData()
                 {
                     Subject = Subject_Input,
                     Venue = Venue_Input,
                     Lecture = Lecture_Input,
-                    StartDateTime = StartDateTime_Input,
-                    EndDateTime = EndDateTime_Input
+                    StartTime = StartTime_Input,
+                    EndTime = EndTime_Input
                 });
 
                 await WriteToFileAsync();
@@ -87,14 +90,14 @@ namespace StudentAlpha.ViewModels
         {
             try
             {
-                //var jsonString = await new FileService().ReadDataFromLocalStorageAsync(TIMETABLE_JSONFILENAME);
-                //Timetable = JsonConvert.DeserializeObject<ObservableCollection<TimetableData>>(jsonString);
+                var jsonString = await new FileService().ReadDataFromLocalStorageAsync(TIMETABLE_JSONFILENAME);
+                Timetable = JsonConvert.DeserializeObject<ObservableCollection<TimetableData>>(jsonString);
 
                 //devide into day of week
                 foreach (var c in Timetable)
                 {
-                    Timetables[(int)c.StartDateTime.DayOfWeek].Add(c);
-                    Timetables[(int)c.StartDateTime.DayOfWeek].OrderBy(v => v.StartDateTime);
+                    Timetables[(int)c.Day].Add(c);
+                    Timetables[(int)c.Day].OrderBy(v => v.StartTime);
                 }
             }
             catch { }
