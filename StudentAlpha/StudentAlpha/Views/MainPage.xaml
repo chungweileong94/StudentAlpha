@@ -71,7 +71,7 @@
 
                     <StackPanel Grid.Row="1">
                         <Border Height="1" BorderThickness="0" HorizontalAlignment="Stretch" Opacity=".2" Background="White"/>
-                        <ListViewItem Height="48" Padding="0" Margin="0" Foreground="White" HorizontalAlignment="Stretch" Style="{StaticResource NavListViewItemStyle}">
+                        <ListViewItem Visibility="Collapsed" Height="48" Padding="0" Margin="0" Foreground="White" HorizontalAlignment="Stretch" Style="{StaticResource NavListViewItemStyle}">
                             <StackPanel Orientation="Horizontal">
                                 <SymbolIcon Symbol="Contact" Width="48" Height="48"/>
                                 <TextBlock Text="Account" FontSize="16" Margin="16,0,0,0" VerticalAlignment="Center"/>

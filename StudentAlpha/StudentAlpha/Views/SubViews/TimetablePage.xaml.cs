@@ -1,4 +1,5 @@
-﻿using StudentAlpha.Models;
+﻿using static StudentAlpha.App;
+using StudentAlpha.Models;
 using StudentAlpha.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,11 @@ namespace StudentAlpha.Views.SubViews
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            _TimetableViewModel = await new TimetableViewModel().LoadAsync();
+            if (_TimetableViewModel_Share == null)
+            {
+                _TimetableViewModel_Share = await new TimetableViewModel().LoadAsync();
+            }
+            _TimetableViewModel = _TimetableViewModel_Share;
             Bindings.Update();
         }
 
@@ -109,6 +114,12 @@ namespace StudentAlpha.Views.SubViews
         private void TodayAppBarButton_Click(object sender, RoutedEventArgs e)
         {
             TimetablePivot.SelectedIndex = (int)DateTime.Now.DayOfWeek;
+        }
+
+        private void GridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var rootFrame = Window.Current.Content as Frame;
+            rootFrame.Navigate(typeof(TimetableDetailPage), e.ClickedItem);
         }
     }
 

@@ -90,9 +90,11 @@ namespace StudentAlpha.ViewModels
                 //var jsonString = await new FileService().ReadDataFromLocalStorageAsync(TIMETABLE_JSONFILENAME);
                 //Timetable = JsonConvert.DeserializeObject<ObservableCollection<TimetableData>>(jsonString);
 
+                //devide into day of week
                 foreach (var c in Timetable)
                 {
                     Timetables[(int)c.StartDateTime.DayOfWeek].Add(c);
+                    Timetables[(int)c.StartDateTime.DayOfWeek].OrderBy(v => v.StartDateTime);
                 }
             }
             catch { }

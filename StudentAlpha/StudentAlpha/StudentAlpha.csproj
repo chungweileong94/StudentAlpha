@@ -126,6 +126,9 @@
     <Compile Include="Views\SubViews\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SubViews\TimetableDetailPage.xaml.cs">
+      <DependentUpon>TimetableDetailPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SubViews\TimetablePage.xaml.cs">
       <DependentUpon>TimetablePage.xaml</DependentUpon>
     </Compile>
@@ -180,6 +183,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SubViews\SettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SubViews\TimetableDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
