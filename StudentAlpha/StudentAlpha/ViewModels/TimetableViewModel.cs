@@ -86,6 +86,36 @@ namespace StudentAlpha.ViewModels
                 return false;
             }
         }
+
+        public async Task<bool> EditAsync(TimetableData timetableData)
+        {
+            if (!string.IsNullOrWhiteSpace(Subject_Input) &&
+                !string.IsNullOrWhiteSpace(Venue_Input) &&
+                StartTime_Input != null &&
+                EndTime_Input != null)
+            {
+                var _class = Timetable.First(a => (a == timetableData));
+                _class.Subject = Subject_Input;
+                _class.Venue = Venue_Input;
+                _class.Lecture = Lecture_Input;
+                _class.Day = Day_Input;
+                _class.StartTime = StartTime_Input;
+                _class.EndTime = EndTime_Input;
+
+                await WriteToFileAsync();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task RemoveAsync(TimetableData timetableData)
+        {
+            Timetable.Remove(timetableData);
+            await WriteToFileAsync();
+        }
+
         public async Task<TimetableViewModel> LoadAsync()
         {
             try

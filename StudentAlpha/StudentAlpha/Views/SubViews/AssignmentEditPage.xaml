@@ -32,7 +32,7 @@
 
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton Icon="Accept" Label="Done" Click="DoneAppBarButton_Click">
+            <AppBarButton Icon="Accept" Label="Update" Click="DoneAppBarButton_Click">
                 <FlyoutBase.AttachedFlyout>
                     <Flyout>
                         <TextBlock Text="All field are required"/>

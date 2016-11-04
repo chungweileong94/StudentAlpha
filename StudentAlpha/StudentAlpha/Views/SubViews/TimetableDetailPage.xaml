@@ -34,7 +34,14 @@
                 </Grid>
             </CommandBar.Content>
 
-            <AppBarButton Icon="Save" Label="Save"/>
+            <AppBarButton Icon="Save" Label="Save" Click="SaveAppBarButton_Click">
+                <FlyoutBase.AttachedFlyout>
+                    <Flyout>
+                        <TextBlock Text="Subject, Venue, Day and Time are required"/>
+                    </Flyout>
+                </FlyoutBase.AttachedFlyout>
+            </AppBarButton>
+            <AppBarButton Icon="Delete" Label="Delete" Click="DeleteAppBarButton_Click"/>
         </CommandBar>
     </Page.TopAppBar>
 
@@ -67,9 +74,9 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel x:Name="_StackPanel">
-                    <TextBox Text="{x:Bind _TimetableViewModel.Subject_Input,Mode=TwoWay}" PlaceholderText="Subject" FontSize="32" Style="{StaticResource DetailTextBoxStyle}"/>
-                    <TextBox Text="{x:Bind _TimetableViewModel.Lecture_Input,Mode=TwoWay}" PlaceholderText="Lecture" FontSize="24" Style="{StaticResource DetailTextBoxStyle}"/>
-                    <TextBox Text="{x:Bind _TimetableViewModel.Venue_Input,Mode=TwoWay}" PlaceholderText="Venue" FontSize="18" Style="{StaticResource DetailTextBoxStyle}"/>
+                    <TextBox Text="{Binding Subject_Input,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Subject" FontSize="32" Style="{StaticResource DetailTextBoxStyle}"/>
+                    <TextBox Text="{Binding Lecture_Input,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Lecture" FontSize="24" Style="{StaticResource DetailTextBoxStyle}"/>
+                    <TextBox Text="{Binding Venue_Input,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Venue" FontSize="18" Style="{StaticResource DetailTextBoxStyle}"/>
                 </StackPanel>
             </Grid>
 
@@ -84,8 +91,8 @@
             </ComboBox>
 
             <StackPanel x:Name="stackPanel" Orientation="Horizontal">
-                <TimePicker Header="Start Time" Time="{x:Bind _TimetableViewModel.StartTime_Input}" Margin="0,0,20,0"/>
-                <TimePicker Header="End Time" Time="{x:Bind _TimetableViewModel.EndTime_Input}"/>
+                <TimePicker Header="Start Time" Time="{x:Bind _TimetableViewModel.StartTime_Input,Mode=TwoWay}" Margin="0,0,20,0"/>
+                <TimePicker Header="End Time" Time="{x:Bind _TimetableViewModel.EndTime_Input,Mode=TwoWay}"/>
             </StackPanel>
         </StackPanel>
     </ScrollViewer>

@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using StudentAlpha.Models;
 using StudentAlpha.ViewModels;
+using Windows.UI.Popups;
 
 namespace StudentAlpha.Views.SubViews
 {
@@ -29,6 +30,7 @@ namespace StudentAlpha.Views.SubViews
             this.InitializeComponent();
 
             _TimetableViewModel = _TimetableViewModel_Share;
+            DataContext = _TimetableViewModel;
 
             switch ((int)_LocalSettings.Values[THEME_SETTING])
             {
@@ -68,12 +70,78 @@ namespace StudentAlpha.Views.SubViews
             SystemNavigationManager.GetForCurrentView().BackRequested -= TimetableDetailPage_BackRequested;
         }
 
-        private void TimetableDetailPage_BackRequested(object sender, BackRequestedEventArgs e)
+        private async void TimetableDetailPage_BackRequested(object sender, BackRequestedEventArgs e)
         {
-            if (Frame.CanGoBack)
+            if (isDiffer())
             {
-                e.Handled = true;
-                Frame.GoBack();
+                MessageDialog msg = new MessageDialog("All the changes will be discard. Are you sure to leave?", "Leave");
+                msg.Commands.Add(new UICommand("Yes", delegate
+                {
+                    if (Frame.CanGoBack)
+                    {
+                        e.Handled = true;
+                        Frame.GoBack();
+                    }
+                }));
+                msg.Commands.Add(new UICommand("No"));
+                await msg.ShowAsync();
+            }
+            else
+            {
+                if (Frame.CanGoBack)
+                {
+                    e.Handled = true;
+                    Frame.GoBack();
+                }
+            }
+        }
+
+        private async void DeleteAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageDialog msg = new MessageDialog("Are you sure to delete?", "Delete Class");
+            msg.Commands.Add(new UICommand("Yes", async delegate
+            {
+                await _TimetableViewModel.RemoveAsync(_Class);
+                if (Frame.CanGoBack)
+                {
+                    Frame.GoBack();
+                }
+            }));
+            msg.Commands.Add(new UICommand("No"));
+            await msg.ShowAsync();
+        }
+
+        private async void SaveAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            var result = await _TimetableViewModel.EditAsync(_Class);
+
+            if (result)
+            {
+                if (Frame.CanGoBack)
+                {
+                    Frame.GoBack();
+                }
+            }
+            else
+            {
+                FlyoutBase.GetAttachedFlyout(sender as FrameworkElement).ShowAt(sender as FrameworkElement);
+            }
+        }
+
+        private bool isDiffer()
+        {
+            if (_TimetableViewModel.Subject_Input != _Class.Subject ||
+                _TimetableViewModel.Lecture_Input != _Class.Lecture ||
+                _TimetableViewModel.Venue_Input != _Class.Venue ||
+                _TimetableViewModel.Day_Input != _Class.Day ||
+                _TimetableViewModel.StartTime_Input != _Class.StartTime ||
+                _TimetableViewModel.EndTime_Input != _Class.EndTime)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
