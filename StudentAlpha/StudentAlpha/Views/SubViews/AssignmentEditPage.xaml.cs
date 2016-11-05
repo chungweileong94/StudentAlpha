@@ -96,5 +96,13 @@ namespace StudentAlpha.Views.SubViews
                 FlyoutBase.GetAttachedFlyout(sender as FrameworkElement).ShowAt(sender as FrameworkElement);
             }
         }
+
+        private void CancelAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Frame.CanGoBack)
+            {
+                Frame.GoBack();
+            }
+        }
     }
 }

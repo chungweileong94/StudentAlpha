@@ -132,26 +132,25 @@
                         <GridView Grid.Row="1" ItemsSource="{x:Bind _HomeViewModel._Assignments,Mode=OneWay}" SelectionMode="None">
                             <GridView.ItemContainerStyle>
                                 <Style TargetType="GridViewItem">
-                                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                                     <Setter Property="Padding" Value="0,0,0,12"/>
-                                    <Setter Property="Width" Value="270"/>
+                                    <Setter Property="Width" Value="275"/>
                                 </Style>
                             </GridView.ItemContainerStyle>
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="models:Assignment">
-                                    <Grid BorderThickness="1" BorderBrush="{x:Bind Status,Mode=OneWay,Converter={StaticResource StatusToColor_NagConverter}}">
+                                    <Grid BorderThickness="1" HorizontalAlignment="Stretch" BorderBrush="{x:Bind Status,Mode=OneWay,Converter={StaticResource StatusToColor_NagConverter}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Margin="8">
-                                            <TextBlock Text="{x:Bind Title,Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"/>
+                                            <TextBlock Text="{x:Bind Title,Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap"/>
                                             <TextBlock Opacity=".7" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap">
                                                 <Run Text="Due Date: " Foreground="{ThemeResource SystemAccentColor}"/>
-                                                <Run Text="{x:Bind DueDateLongStringFormat,Mode=OneWay}"/>
+                                                <Run Text="Today"/>
                                             </TextBlock>
                                             <TextBlock Text="{x:Bind Subject,Mode=OneWay}" Foreground="{ThemeResource SystemAccentColor}" FontSize="16" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Opacity=".7" Margin="0,8,0,0"/>
-                                            <TextBlock Text="{x:Bind Description,Mode=OneWay}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" Opacity=".7"/>
                                         </StackPanel>
 
                                         <StackPanel Grid.Column="1" Orientation="Horizontal" Padding="12,0" Background="{x:Bind Status,Mode=OneWay,Converter={StaticResource StatusToColor_NagConverter}}">

@@ -39,7 +39,7 @@
                     </Flyout>
                 </FlyoutBase.AttachedFlyout>
             </AppBarButton>
-            <AppBarButton Icon="Cancel" Label="Cancel"/>
+            <AppBarButton Icon="Cancel" Label="Cancel" Click="CancelAppBarButton_Click"/>
         </CommandBar>
     </Page.BottomAppBar>
 
@@ -83,7 +83,7 @@
                     </TextBox.Header>
                 </TextBox>
 
-                <TextBox Text="{Binding Description_Input,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" FontSize="16" PlaceholderText="Assignment's Description" BorderThickness="1" Height="200" Margin="0,0,0,20">
+                <TextBox Text="{Binding Description_Input,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" FontSize="16" PlaceholderText="Assignment's Description" BorderThickness="1" Height="200" Margin="0,0,0,20" TextWrapping="Wrap">
                     <TextBox.Header>
                         <TextBlock Text="Description" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                     </TextBox.Header>
