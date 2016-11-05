@@ -23,7 +23,7 @@
 
         <DataTemplate x:Name="TimetableItemTemplate" x:DataType="models:TimetableData">
             <StackPanel Padding="24">
-                <TextBlock Text="{x:Bind Subject}" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="0,0,0,8"/>
+                <TextBlock Text="{x:Bind Subject}" Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Margin="0,0,0,8"/>
                 <TextBlock Opacity=".7" FontSize="16">
                     <Run Text="{x:Bind StartTimeStringFormat}"/>
                     <Run Text=" To "/>

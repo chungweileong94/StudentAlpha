@@ -129,7 +129,7 @@ namespace StudentAlpha.ViewModels
             foreach (var c in Timetable)
             {
                 Timetables[(int)c.Day].Add(c);
-                Timetables[(int)c.Day].OrderBy(v => v.StartTime);
+                Timetables[(int)c.Day] = new ObservableCollection<TimetableData>(Timetables[(int)c.Day].OrderBy(v => v.StartTime).ToList());
             }
         }
         #endregion

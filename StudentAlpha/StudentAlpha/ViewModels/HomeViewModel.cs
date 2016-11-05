@@ -58,6 +58,7 @@ namespace StudentAlpha.ViewModels
                         _Timetable.Add(c);
                     }
                 }
+                _Timetable = new ObservableCollection<TimetableData>(_Timetable.OrderBy(c => c.StartTime).ToList());
             }
             catch { }
         }
