@@ -89,7 +89,7 @@
                     </TextBox.Header>
                 </TextBox>
 
-                <ComboBox SelectedIndex="{x:Bind _TimetableViewModel.Day_Input,Mode=TwoWay,Converter={StaticResource DayOfWeekToIntConverter}}" PlaceholderText="Day" BorderThickness="1" Margin="0,0,0,20">
+                <ComboBox SelectedIndex="{x:Bind ViewModel.Day_Input,Mode=TwoWay,Converter={StaticResource DayOfWeekToIntConverter}}" PlaceholderText="Day" BorderThickness="1" Margin="0,0,0,20">
                     <ComboBox.Header>
                         <TextBlock Text="Day" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                     </ComboBox.Header>
@@ -103,13 +103,13 @@
                     <ComboBoxItem Content="Saturday"/>
                 </ComboBox>
 
-                <TimePicker Time="{x:Bind _TimetableViewModel.StartTime_Input,Mode=TwoWay}" HorizontalAlignment="Left" Margin="0,0,0,20">
+                <TimePicker Time="{x:Bind ViewModel.StartTime_Input,Mode=TwoWay}" HorizontalAlignment="Left" Margin="0,0,0,20">
                     <TimePicker.Header>
                         <TextBlock Text="Start Time" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                     </TimePicker.Header>
                 </TimePicker>
 
-                <TimePicker Time="{x:Bind _TimetableViewModel.EndTime_Input,Mode=TwoWay}" HorizontalAlignment="Left">
+                <TimePicker Time="{x:Bind ViewModel.EndTime_Input,Mode=TwoWay}" HorizontalAlignment="Left">
                     <TimePicker.Header>
                         <TextBlock Text="End Time" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                     </TimePicker.Header>
