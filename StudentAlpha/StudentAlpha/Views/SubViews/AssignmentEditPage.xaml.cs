@@ -1,38 +1,20 @@
 ﻿using static StudentAlpha.App;
 using StudentAlpha.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using StudentAlpha.Models;
 using Windows.UI.Core;
 
 namespace StudentAlpha.Views.SubViews
 {
     public sealed partial class AssignmentEditPage : Page
     {
-        public AssignmentsViewModel _AssignmentsViewModel { get; set; }
+        public AssignmentsViewModel ViewModel { get; set; }
 
         public AssignmentEditPage()
         {
             this.InitializeComponent();
-
-            _AssignmentsViewModel = _AssignmentsViewModel_Share;
-            _AssignmentsViewModel.Title_Input = string.Empty;
-            _AssignmentsViewModel.Subject_Input = string.Empty;
-            _AssignmentsViewModel.Description_Input = string.Empty;
-            _AssignmentsViewModel.DueDate_Input = DateTime.Now;
-            DataContext = _AssignmentsViewModel;
 
             switch ((int)_LocalSettings.Values[THEME_SETTING])
             {
@@ -52,12 +34,13 @@ namespace StudentAlpha.Views.SubViews
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            var assignment = e.Parameter as Assignment;
 
-            _AssignmentsViewModel.Title_Input = assignment.Title;
-            _AssignmentsViewModel.Subject_Input = assignment.Subject;
-            _AssignmentsViewModel.Description_Input = assignment.Description;
-            _AssignmentsViewModel.DueDate_Input = assignment.DueDate;
+            ViewModel = e.Parameter as AssignmentsViewModel;
+            ViewModel.Title_Input = ViewModel.SelectedAssignment.Title;
+            ViewModel.Subject_Input = ViewModel.SelectedAssignment.Subject;
+            ViewModel.Description_Input = ViewModel.SelectedAssignment.Description;
+            ViewModel.DueDate_Input = ViewModel.SelectedAssignment.DueDate;
+            DataContext = ViewModel;
 
             PreviousPageType = typeof(AssignmentsPage);
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = Frame.CanGoBack ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
@@ -82,7 +65,7 @@ namespace StudentAlpha.Views.SubViews
 
         private async void DoneAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            var result = await _AssignmentsViewModel.EditAsync();
+            var result = await ViewModel.EditAsync();
 
             if (result)
             {

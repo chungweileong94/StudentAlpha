@@ -112,9 +112,6 @@
     <Compile Include="Views\SubViews\AssignmentAddPage.xaml.cs">
       <DependentUpon>AssignmentAddPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SubViews\AssignmentDetailPage.xaml.cs">
-      <DependentUpon>AssignmentDetailPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SubViews\AssignmentEditPage.xaml.cs">
       <DependentUpon>AssignmentEditPage.xaml</DependentUpon>
     </Compile>
@@ -203,10 +200,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Views\SubViews\AssignmentAddPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SubViews\AssignmentDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

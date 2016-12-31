@@ -89,7 +89,7 @@
                     </TextBox.Header>
                 </TextBox>
 
-                <DatePicker Date="{x:Bind _AssignmentsViewModel.DueDate_Input,Mode=TwoWay,Converter={StaticResource DateTimeToDateTimeOffsetConverter}}" HorizontalAlignment="Left">
+                <DatePicker Date="{x:Bind ViewModel.DueDate_Input,Mode=TwoWay,Converter={StaticResource DateTimeToDateTimeOffsetConverter}}" HorizontalAlignment="Left">
                     <DatePicker.Header>
                         <TextBlock Text="Due Date" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                     </DatePicker.Header>

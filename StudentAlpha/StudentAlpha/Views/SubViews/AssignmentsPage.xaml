@@ -19,73 +19,68 @@
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="48"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
         <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="CommandBarVisualStateGroup">
+            <VisualStateGroup x:Name="AssignmentsVisualStateGroup" CurrentStateChanged="CommandBarVisualStateGroup_CurrentStateChanged">
                 <VisualState x:Name="LargeWidth">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="720"/>
                     </VisualState.StateTriggers>
                 </VisualState>
-                <VisualState x:Name="SmallWidth">
+                <VisualState x:Name="SmallWidth_ListView">
                     <VisualState.Setters>
+                        <Setter Target="ListViewGrid.(Grid.ColumnSpan)" Value="2"/>
                         <Setter Target="TopCommandBar.(UIElement.Margin)" Value="48,0,0,0"/>
                         <Setter Target="TopCommandBar.(Grid.ColumnSpan)" Value="2"/>
-                        <Setter Target="AssignmentListView.(Grid.ColumnSpan)" Value="2"/>
-                        <Setter Target="DetailContentPresenter.(UIElement.Visibility)" Value="Collapsed"/>
+                        <Setter Target="DetailGrid.(Grid.Column)" Value="0"/>
+                        <Setter Target="DetailGrid.(Grid.ColumnSpan)" Value="2"/>
+                        <Setter Target="TopDetailCommandBar.(UIElement.Margin)" Value="48,0,0,0"/>
+                        <Setter Target="TopDetailCommandBar.(Grid.ColumnSpan)" Value="2"/>
+                        <Setter Target="DetailGrid.(UIElement.Visibility)" Value="Collapsed"/>
                     </VisualState.Setters>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0"/>
-                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="SmallWidth_Detail">
+                    <VisualState.Setters>
+                        <Setter Target="DetailGrid.(Grid.Column)" Value="0"/>
+                        <Setter Target="DetailGrid.(Grid.ColumnSpan)" Value="2"/>
+                        <Setter Target="TopDetailCommandBar.(UIElement.Margin)" Value="48,0,0,0"/>
+                        <Setter Target="TopDetailCommandBar.(Grid.ColumnSpan)" Value="2"/>
+                        <Setter Target="ListViewGrid.(Grid.ColumnSpan)" Value="2"/>
+                        <Setter Target="TopCommandBar.(UIElement.Margin)" Value="48,0,0,0"/>
+                        <Setter Target="TopCommandBar.(Grid.ColumnSpan)" Value="2"/>
+                        <Setter Target="DetailGrid.(UIElement.Visibility)" Value="Visible"/>
+                    </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <CommandBar x:Name="TopCommandBar" Grid.RowSpan="2" Style="{StaticResource CommandBarStyle}">
-            <CommandBar.Content>
-                <Grid Height="48">
-                    <TextBlock Text="Assignments" Style="{StaticResource CommandBarTitleTextBlockStyle}"/>
-                </Grid>
-            </CommandBar.Content>
 
-            <AppBarButton Icon="Add" Label="New" Click="NewAppBarButton_Click"/>
-        </CommandBar>
+        <Grid x:Name="ListViewGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <CommandBar 
-            Grid.Column="1" 
-            Grid.RowSpan="2" 
-            Style="{StaticResource CommandBarStyle}"
-            Visibility="{x:Bind AssignmentListView.SelectedItem,Mode=OneWay,Converter={StaticResource DetailVisibilityConverter}}">
-            <CommandBar.Content>
-                <Grid Height="48">
-                    <TextBlock Text="Detail" Style="{StaticResource CommandBarTitleTextBlockStyle}"/>
-                </Grid>
-            </CommandBar.Content>
+            <CommandBar x:Name="TopCommandBar" Grid.RowSpan="2" Style="{StaticResource CommandBarStyle}">
+                <CommandBar.Content>
+                    <Grid Height="48">
+                        <TextBlock Text="Assignments" Style="{StaticResource CommandBarTitleTextBlockStyle}"/>
+                    </Grid>
+                </CommandBar.Content>
 
-            <AppBarButton Icon="Accept" Label="Toggle Status" Click="{x:Bind _AssignmentsViewModel.ChangeStatus}"/>
-            <AppBarButton Icon="Edit" Label="Edit" Click="EditAppBarButton_Click"/>
-            <AppBarButton Icon="Delete" Label="Delete" Click="DeleteAppBarButton_Click"/>
-        </CommandBar>
-
-        <Grid Grid.Row="1" Grid.ColumnSpan="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="2*"/>
-            </Grid.ColumnDefinitions>
+                <AppBarButton Icon="Add" Label="New" Click="NewAppBarButton_Click"/>
+            </CommandBar>
 
             <!--Assignment List-->
             <ListView 
                 x:Name="AssignmentListView"
-                ItemsSource="{x:Bind _AssignmentsViewModel.Assignments}" 
-                SelectedItem="{x:Bind _AssignmentsViewModel.SelectedAssignment, Mode=TwoWay, Converter={StaticResource AssignmentToObjectConverter}}"
+                Grid.Row="1"
+                ItemsSource="{x:Bind ViewModel.Assignments}" 
+                SelectedItem="{x:Bind ViewModel.SelectedAssignment, Mode=TwoWay, Converter={StaticResource AssignmentToObjectConverter}}"
                 Background="{ThemeResource SystemControlBackgroundBaseLowBrush}"
                 IsItemClickEnabled="True"
                 ItemClick="AssignmentListView_ItemClick">
@@ -141,13 +136,38 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+        </Grid>
+
+        <Grid Grid.Column="1" x:Name="DetailGrid" Visibility="{x:Bind AssignmentListView.SelectedItem,Mode=OneWay,Converter={StaticResource DetailVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <CommandBar 
+                x:Name="TopDetailCommandBar"
+                Grid.Column="1" 
+                Grid.RowSpan="2" 
+                Style="{StaticResource CommandBarStyle}">
+                <CommandBar.Content>
+                    <Grid Height="48">
+                        <TextBlock Text="Detail" Style="{StaticResource CommandBarTitleTextBlockStyle}"/>
+                    </Grid>
+                </CommandBar.Content>
+
+                <AppBarButton Icon="Accept" Label="Toggle Status" Click="{x:Bind ViewModel.ChangeStatus}"/>
+                <AppBarButton Icon="Edit" Label="Edit" Click="EditAppBarButton_Click"/>
+                <AppBarButton Icon="Delete" Label="Delete" Click="DeleteAppBarButton_Click"/>
+            </CommandBar>
 
             <!--Assignment Content-->
             <ContentPresenter 
-                x:Name="DetailContentPresenter" 
-                Grid.Column="1" 
-                Content="{x:Bind _AssignmentsViewModel.SelectedAssignment,Mode=OneWay}"
-                Visibility="{x:Bind AssignmentListView.SelectedItem,Mode=OneWay,Converter={StaticResource DetailVisibilityConverter}}">
+                x:Name="DetailContentPresenter"
+                Grid.Row="1"
+                Background="{ThemeResource SystemControlBackgroundAltHighBrush}" 
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Content="{x:Bind ViewModel.SelectedAssignment,Mode=OneWay}">
                 <ContentPresenter.ContentTemplate>
                     <DataTemplate x:DataType="models:Assignment">
                         <Grid Padding="16">

@@ -11,18 +11,11 @@ namespace StudentAlpha.Views.SubViews
 {
     public sealed partial class AssignmentAddPage : Page
     {
-        public AssignmentsViewModel _AssignmentsViewModel { get; set; }
+        public AssignmentsViewModel ViewModel { get; set; }
 
         public AssignmentAddPage()
         {
             this.InitializeComponent();
-
-            _AssignmentsViewModel = _AssignmentsViewModel_Share;
-            _AssignmentsViewModel.Title_Input = string.Empty;
-            _AssignmentsViewModel.Subject_Input = string.Empty;
-            _AssignmentsViewModel.Description_Input = string.Empty;
-            _AssignmentsViewModel.DueDate_Input = DateTime.Now;
-            DataContext = _AssignmentsViewModel;
 
             switch ((int)_LocalSettings.Values[THEME_SETTING])
             {
@@ -42,6 +35,14 @@ namespace StudentAlpha.Views.SubViews
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+
+            ViewModel = e.Parameter as AssignmentsViewModel;
+            ViewModel.Title_Input = string.Empty;
+            ViewModel.Subject_Input = string.Empty;
+            ViewModel.Description_Input = string.Empty;
+            ViewModel.DueDate_Input = DateTime.Now;
+            DataContext = ViewModel;
+
             PreviousPageType = typeof(AssignmentsPage);
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = Frame.CanGoBack ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
             SystemNavigationManager.GetForCurrentView().BackRequested += AssignmentAddPage_BackRequested;
@@ -66,7 +67,7 @@ namespace StudentAlpha.Views.SubViews
         #region Events
         private async void CreateAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            var result = await _AssignmentsViewModel.AddAsync();
+            var result = await ViewModel.AddAsync();
 
             if (result)
             {

@@ -28,7 +28,6 @@ namespace StudentAlpha
         public const string ASSIGNMENTS_JSONFILENAME = "Assignments.json";
         public const string TIMETABLE_JSONFILENAME = "Timetable.json";
         public static Type PreviousPageType = null;
-        public static AssignmentsViewModel _AssignmentsViewModel_Share { get; set; }
 
         public App()
         {
