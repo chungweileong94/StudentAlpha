@@ -113,7 +113,7 @@ namespace StudentAlpha.ViewModels
         {
             try
             {
-                var jsonString = await new FileService().ReadDataFromLocalStorageAsync(ASSIGNMENTS_JSONFILENAME);
+                var jsonString = await FileService.ReadDataFromLocalStorageAsync(ASSIGNMENTS_JSONFILENAME);
                 Assignments = JsonConvert.DeserializeObject<ObservableCollection<Assignment>>(jsonString);
             }
             catch { }
@@ -122,7 +122,7 @@ namespace StudentAlpha.ViewModels
         private async Task WriteToFileAsync()
         {
             string jsonString = JsonConvert.SerializeObject(Assignments);
-            await new FileService().WriteDataToLocalStorageAsync(ASSIGNMENTS_JSONFILENAME, jsonString);
+            await FileService.WriteDataToLocalStorageAsync(ASSIGNMENTS_JSONFILENAME, jsonString);
         }
         #endregion
     }

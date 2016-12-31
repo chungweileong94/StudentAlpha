@@ -4,16 +4,16 @@ using Windows.Storage;
 
 namespace StudentAlpha.Services
 {
-    public class FileService
+    public abstract class FileService
     {
-        public async Task WriteDataToLocalStorageAsync(string fileName, string content)
+        public static async Task WriteDataToLocalStorageAsync(string fileName, string content)
         {
             StorageFolder folder = ApplicationData.Current.LocalFolder;
             StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
             await FileIO.WriteTextAsync(file, content);
         }
 
-        public async Task<string> ReadDataFromLocalStorageAsync(string fileName)
+        public static async Task<string> ReadDataFromLocalStorageAsync(string fileName)
         {
             string result = null;
             StorageFolder folder = ApplicationData.Current.LocalFolder;

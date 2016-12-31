@@ -1,60 +1,61 @@
 ﻿using static StudentAlpha.App;
 using StudentAlpha.Models;
 using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using StudentAlpha.Services;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using StudentAlpha.Helpers;
 
 namespace StudentAlpha.ViewModels
 {
     public class HomeViewModel : BaseViewModel
     {
-        public ObservableCollection<TimetableData> _Timetable { get; set; }
-        public ObservableCollection<Assignment> _Assignments { get; set; }
+        public ObservableRangeCollection<TimetableData> _Timetable { get; set; }
+        public ObservableRangeCollection<Assignment> _Assignments { get; set; }
 
+        private bool _IsLoading;
+        public bool IsLoading
+        {
+            get { return _IsLoading; }
+            set { Set(ref _IsLoading, value); }
+        }
 
         public HomeViewModel()
         {
-            _Timetable = new ObservableCollection<TimetableData>();
-            _Assignments = new ObservableCollection<Assignment>();
+            _Timetable = new ObservableRangeCollection<TimetableData>();
+            _Assignments = new ObservableRangeCollection<Assignment>();
+            IsLoading = false;
         }
 
         public async Task LoadAsync()
         {
-            FileService fs = new FileService();
+            IsLoading = true;
 
             try
             {
-                _Assignments = new ObservableCollection<Assignment>();
-                var jsonString = await fs.ReadDataFromLocalStorageAsync(ASSIGNMENTS_JSONFILENAME);
-                var temp = JsonConvert.DeserializeObject<ObservableCollection<Assignment>>(jsonString);
-                foreach (var a in temp)
-                {
-                    if (a.DueDateShortStringFormat == DateTime.Now.ToString("d/M/yyyy"))
-                    {
-                        _Assignments.Add(a);
-                    }
-                }
+                _Timetable = new ObservableRangeCollection<TimetableData>();
+                var jsonString = await FileService.ReadDataFromLocalStorageAsync(TIMETABLE_JSONFILENAME);
+                var temp = JsonConvert.DeserializeObject<List<TimetableData>>(jsonString)
+                    .Where(c => c.Day == DateTime.Now.DayOfWeek)
+                    .OrderBy(c => c.StartTime);
+
+                _Timetable.AddRange(temp);
             }
             catch { }
 
             try
             {
-                _Timetable = new ObservableCollection<TimetableData>();
-                var jsonString = await fs.ReadDataFromLocalStorageAsync(TIMETABLE_JSONFILENAME);
-                var temp = JsonConvert.DeserializeObject<ObservableCollection<TimetableData>>(jsonString);
-                foreach (var c in temp)
-                {
-                    if (c.Day == DateTime.Now.DayOfWeek)
-                    {
-                        _Timetable.Add(c);
-                    }
-                }
-                _Timetable = new ObservableCollection<TimetableData>(_Timetable.OrderBy(c => c.StartTime).ToList());
+                var jsonString = await FileService.ReadDataFromLocalStorageAsync(ASSIGNMENTS_JSONFILENAME);
+                var temp = JsonConvert.DeserializeObject<List<Assignment>>(jsonString)
+                    .Where(a => a.DueDateShortStringFormat == DateTime.Now.ToString("d/M/yyyy"));
+
+                _Assignments.AddRange(temp);
             }
             catch { }
+
+            IsLoading = false;
         }
     }
 }

@@ -30,7 +30,6 @@ namespace StudentAlpha
         public static Type PreviousPageType = null;
         public static AssignmentsViewModel _AssignmentsViewModel_Share { get; set; }
         public static TimetableViewModel _TimetableViewModel_Share { get; set; }
-        public static HomeViewModel _HomeViewModel_Share { get; set; }
 
         public App()
         {

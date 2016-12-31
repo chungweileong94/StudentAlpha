@@ -99,6 +99,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ObservableRangeCollection.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\TimetableData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

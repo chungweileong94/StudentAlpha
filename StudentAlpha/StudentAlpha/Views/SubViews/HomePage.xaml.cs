@@ -1,30 +1,21 @@
-﻿using static StudentAlpha.App;
-using StudentAlpha.ViewModels;
+﻿using StudentAlpha.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using System.Threading.Tasks;
-using System.ServiceModel.Channels;
 using System.Collections.ObjectModel;
 using StudentAlpha.Models;
 using Windows.UI;
+using Windows.UI.Composition;
+using Windows.UI.Xaml.Hosting;
 
 namespace StudentAlpha.Views.SubViews
 {
     public sealed partial class HomePage : Page
     {
-        public HomeViewModel _HomeViewModel { get; set; }
+        public HomeViewModel ViewModel { get; set; }
 
         public HomePage()
         {
@@ -33,16 +24,42 @@ namespace StudentAlpha.Views.SubViews
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            progressRing.IsActive = true;
             base.OnNavigatedTo(e);
-            if (_HomeViewModel_Share == null)
-            {
-                _HomeViewModel_Share = new HomeViewModel();
-            }
-            await Task.Run(async () => await _HomeViewModel_Share.LoadAsync());
-            _HomeViewModel = _HomeViewModel_Share;
+            ViewModel = new HomeViewModel();
+            await ViewModel.LoadAsync();
             Bindings.Update();
-            progressRing.IsActive = false;
+        }
+
+        private void TimetableGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            var s = sender as Grid;
+            Compositor _compositor = ElementCompositionPreview.GetElementVisual(s).Compositor;
+            var visual = ElementCompositionPreview.GetElementVisual(s);
+
+            visual.Opacity = 0;
+
+            var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
+            fadeAnimation.InsertKeyFrame(1f, 1f);
+            fadeAnimation.Duration = TimeSpan.FromMilliseconds(700);
+            fadeAnimation.DelayTime = TimeSpan.FromMilliseconds(0);
+
+            visual.StartAnimation("Opacity", fadeAnimation);
+        }
+
+        private void AssignmentsGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            var s = sender as Grid;
+            Compositor _compositor = ElementCompositionPreview.GetElementVisual(s).Compositor;
+            var visual = ElementCompositionPreview.GetElementVisual(s);
+
+            visual.Opacity = 0;
+
+            var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
+            fadeAnimation.InsertKeyFrame(1f, 1f);
+            fadeAnimation.Duration = TimeSpan.FromMilliseconds(700);
+            fadeAnimation.DelayTime = TimeSpan.FromMilliseconds(400);
+
+            visual.StartAnimation("Opacity", fadeAnimation);
         }
     }
 

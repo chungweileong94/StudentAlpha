@@ -102,7 +102,7 @@ namespace StudentAlpha.ViewModels
         {
             try
             {
-                var jsonString = await new FileService().ReadDataFromLocalStorageAsync(TIMETABLE_JSONFILENAME);
+                var jsonString = await FileService.ReadDataFromLocalStorageAsync(TIMETABLE_JSONFILENAME);
                 Timetable = JsonConvert.DeserializeObject<ObservableCollection<TimetableData>>(jsonString);
 
                 Reorganize();
@@ -113,7 +113,7 @@ namespace StudentAlpha.ViewModels
         private async Task WriteToFileAsync()
         {
             string jsonString = JsonConvert.SerializeObject(Timetable);
-            await new FileService().WriteDataToLocalStorageAsync(TIMETABLE_JSONFILENAME, jsonString);
+            await FileService.WriteDataToLocalStorageAsync(TIMETABLE_JSONFILENAME, jsonString);
         }
 
         public void Reorganize()
