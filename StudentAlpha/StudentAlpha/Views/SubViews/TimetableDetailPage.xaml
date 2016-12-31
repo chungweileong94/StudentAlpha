@@ -80,7 +80,7 @@
                 </StackPanel>
             </Grid>
 
-            <ComboBox SelectedIndex="{x:Bind _TimetableViewModel.Day_Input,Mode=TwoWay,Converter={StaticResource DayOfWeekToIntConverter}}" PlaceholderText="Day" BorderThickness="1" Margin="0,20,0,8">
+            <ComboBox SelectedIndex="{x:Bind ViewModel.Day_Input,Mode=TwoWay,Converter={StaticResource DayOfWeekToIntConverter}}" PlaceholderText="Day" BorderThickness="1" Margin="0,20,0,8">
                 <ComboBoxItem Content="Sunday"/>
                 <ComboBoxItem Content="Monday"/>
                 <ComboBoxItem Content="Tuesday"/>
@@ -91,8 +91,8 @@
             </ComboBox>
 
             <StackPanel x:Name="stackPanel" Orientation="Horizontal">
-                <TimePicker Header="Start Time" Time="{x:Bind _TimetableViewModel.StartTime_Input,Mode=TwoWay}" Margin="0,0,20,0"/>
-                <TimePicker Header="End Time" Time="{x:Bind _TimetableViewModel.EndTime_Input,Mode=TwoWay}"/>
+                <TimePicker Header="Start Time" Time="{x:Bind ViewModel.StartTime_Input,Mode=TwoWay}" Margin="0,0,20,0"/>
+                <TimePicker Header="End Time" Time="{x:Bind ViewModel.EndTime_Input,Mode=TwoWay}"/>
             </StackPanel>
         </StackPanel>
     </ScrollViewer>

@@ -7,15 +7,19 @@ using System.Threading.Tasks;
 using StudentAlpha.Models;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Data;
+using System.Collections.Generic;
+using StudentAlpha.Helpers;
 
 namespace StudentAlpha.ViewModels
 {
     public class TimetableViewModel : BaseViewModel
     {
         #region Properties
-        public ObservableCollection<TimetableData> Timetable { get; set; }
+        public List<TimetableData> Timetable { get; set; }
 
-        public ObservableCollection<ObservableCollection<TimetableData>> Timetables { get; set; }
+        public ObservableCollection<ObservableRangeCollection<TimetableData>> Timetables { get; set; }
+
+        public TimetableData ClickedItem { get; set; }
 
         #region AddPurpose
         public string Subject_Input { get; set; }
@@ -29,16 +33,16 @@ namespace StudentAlpha.ViewModels
 
         public TimetableViewModel()
         {
-            Timetable = new ObservableCollection<TimetableData>();
-            Timetables = new ObservableCollection<ObservableCollection<TimetableData>>()
+            Timetable = new List<TimetableData>();
+            Timetables = new ObservableCollection<ObservableRangeCollection<TimetableData>>()
             {
-                new ObservableCollection<TimetableData>(), //sun
-                new ObservableCollection<TimetableData>(), //mon
-                new ObservableCollection<TimetableData>(), //tue
-                new ObservableCollection<TimetableData>(), //web
-                new ObservableCollection<TimetableData>(), //thu
-                new ObservableCollection<TimetableData>(), //fri
-                new ObservableCollection<TimetableData>()  //sat
+                new ObservableRangeCollection<TimetableData>(), //sun
+                new ObservableRangeCollection<TimetableData>(), //mon
+                new ObservableRangeCollection<TimetableData>(), //tue
+                new ObservableRangeCollection<TimetableData>(), //web
+                new ObservableRangeCollection<TimetableData>(), //thu
+                new ObservableRangeCollection<TimetableData>(), //fri
+                new ObservableRangeCollection<TimetableData>()  //sat
             };
         }
 
@@ -103,9 +107,33 @@ namespace StudentAlpha.ViewModels
             try
             {
                 var jsonString = await FileService.ReadDataFromLocalStorageAsync(TIMETABLE_JSONFILENAME);
-                Timetable = JsonConvert.DeserializeObject<ObservableCollection<TimetableData>>(jsonString);
+                Timetable = JsonConvert.DeserializeObject<List<TimetableData>>(jsonString);
 
-                Reorganize();
+                foreach (var t in Timetables)
+                {
+                    t.Clear();
+                }
+
+                List<List<TimetableData>> temp = new List<List<TimetableData>>() {
+                    new List<TimetableData>(),
+                    new List<TimetableData>(),
+                    new List<TimetableData>(),
+                    new List<TimetableData>(),
+                    new List<TimetableData>(),
+                    new List<TimetableData>(),
+                    new List<TimetableData>()
+                };
+
+                //devide into day of week
+                foreach (var c in Timetable)
+                {
+                    temp[(int)c.Day].Add(c);
+                }
+
+                for (int i = 0; i < Timetables.Count; i++)
+                {
+                    Timetables[i].AddRange(temp[i].OrderBy(v => v.StartTime));
+                }
             }
             catch { }
         }
@@ -114,21 +142,6 @@ namespace StudentAlpha.ViewModels
         {
             string jsonString = JsonConvert.SerializeObject(Timetable);
             await FileService.WriteDataToLocalStorageAsync(TIMETABLE_JSONFILENAME, jsonString);
-        }
-
-        public void Reorganize()
-        {
-            foreach (var t in Timetables)
-            {
-                t.Clear();
-            }
-
-            //devide into day of week
-            foreach (var c in Timetable)
-            {
-                Timetables[(int)c.Day].Add(c);
-                Timetables[(int)c.Day] = new ObservableCollection<TimetableData>(Timetables[(int)c.Day].OrderBy(v => v.StartTime).ToList());
-            }
         }
         #endregion
     }

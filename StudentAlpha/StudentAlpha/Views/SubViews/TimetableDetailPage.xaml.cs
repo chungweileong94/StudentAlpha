@@ -22,15 +22,12 @@ namespace StudentAlpha.Views.SubViews
 {
     public sealed partial class TimetableDetailPage : Page
     {
-        public TimetableViewModel _TimetableViewModel { get; set; }
+        public TimetableViewModel ViewModel { get; set; }
         public TimetableData _Class { get; set; }
 
         public TimetableDetailPage()
         {
             this.InitializeComponent();
-
-            _TimetableViewModel = _TimetableViewModel_Share;
-            DataContext = _TimetableViewModel;
 
             switch ((int)_LocalSettings.Values[THEME_SETTING])
             {
@@ -50,13 +47,15 @@ namespace StudentAlpha.Views.SubViews
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            _Class = e.Parameter as TimetableData;
-            _TimetableViewModel.Subject_Input = _Class.Subject;
-            _TimetableViewModel.Lecture_Input = _Class.Lecture;
-            _TimetableViewModel.Venue_Input = _Class.Venue;
-            _TimetableViewModel.Day_Input = _Class.Day;
-            _TimetableViewModel.StartTime_Input = _Class.StartTime;
-            _TimetableViewModel.EndTime_Input = _Class.EndTime;
+            ViewModel = e.Parameter as TimetableViewModel;
+            _Class = ViewModel.ClickedItem;
+            ViewModel.Subject_Input = _Class.Subject;
+            ViewModel.Lecture_Input = _Class.Lecture;
+            ViewModel.Venue_Input = _Class.Venue;
+            ViewModel.Day_Input = _Class.Day;
+            ViewModel.StartTime_Input = _Class.StartTime;
+            ViewModel.EndTime_Input = _Class.EndTime;
+            DataContext = ViewModel;
 
             PreviousPageType = typeof(TimetablePage);
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = Frame.CanGoBack ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
@@ -100,7 +99,7 @@ namespace StudentAlpha.Views.SubViews
             MessageDialog msg = new MessageDialog("Are you sure to delete?", "Delete Class");
             msg.Commands.Add(new UICommand("Yes", async delegate
             {
-                await _TimetableViewModel.RemoveAsync(_Class);
+                await ViewModel.RemoveAsync(_Class);
                 if (Frame.CanGoBack)
                 {
                     Frame.GoBack();
@@ -112,7 +111,7 @@ namespace StudentAlpha.Views.SubViews
 
         private async void SaveAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            var result = await _TimetableViewModel.EditAsync(_Class);
+            var result = await ViewModel.EditAsync(_Class);
 
             if (result)
             {
@@ -129,12 +128,12 @@ namespace StudentAlpha.Views.SubViews
 
         private bool isDiffer()
         {
-            if (_TimetableViewModel.Subject_Input != _Class.Subject ||
-                _TimetableViewModel.Lecture_Input != _Class.Lecture ||
-                _TimetableViewModel.Venue_Input != _Class.Venue ||
-                _TimetableViewModel.Day_Input != _Class.Day ||
-                _TimetableViewModel.StartTime_Input != _Class.StartTime ||
-                _TimetableViewModel.EndTime_Input != _Class.EndTime)
+            if (ViewModel.Subject_Input != _Class.Subject ||
+                ViewModel.Lecture_Input != _Class.Lecture ||
+                ViewModel.Venue_Input != _Class.Venue ||
+                ViewModel.Day_Input != _Class.Day ||
+                ViewModel.StartTime_Input != _Class.StartTime ||
+                ViewModel.EndTime_Input != _Class.EndTime)
             {
                 return true;
             }

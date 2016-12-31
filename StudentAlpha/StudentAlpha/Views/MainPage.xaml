@@ -40,7 +40,7 @@
                     </Grid.RowDefinitions>
 
                     <ScrollViewer HorizontalScrollMode="Disabled" VerticalScrollBarVisibility="Hidden">
-                        <StackPanel>
+                        <StackPanel Loaded="NavStackPanel_Loaded">
                             <RadioButton 
                                 Content="Home"
                                 Tag="&#xE80F;" 

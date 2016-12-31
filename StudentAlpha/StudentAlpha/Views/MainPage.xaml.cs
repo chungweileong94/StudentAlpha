@@ -109,6 +109,18 @@ namespace StudentAlpha.Views
             MainSplitView.IsPaneOpen = false;
         }
 
+        private void NavStackPanel_Loaded(object sender, RoutedEventArgs e)
+        {
+            foreach (var rb in allRadioButtons(this))
+            {
+                if (MainFrame.SourcePageType.Name == $"{rb.Content}Page")
+                {
+                    rb.IsChecked = true;
+                    return;
+                }
+            }
+        }
+
         private List<RadioButton> allRadioButtons(DependencyObject parent)
         {
             var list = new List<RadioButton>();

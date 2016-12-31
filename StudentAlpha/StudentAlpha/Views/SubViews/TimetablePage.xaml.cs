@@ -15,7 +15,7 @@ namespace StudentAlpha.Views.SubViews
 {
     public sealed partial class TimetablePage : Page
     {
-        public TimetableViewModel _TimetableViewModel { get; set; }
+        public TimetableViewModel ViewModel { get; set; }
 
         public TimetablePage()
         {
@@ -25,16 +25,8 @@ namespace StudentAlpha.Views.SubViews
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (_TimetableViewModel_Share == null)
-            {
-                _TimetableViewModel_Share = new TimetableViewModel();
-                await Task.Run(async () => await _TimetableViewModel_Share.LoadAsync());
-            }
-            else
-            {
-                _TimetableViewModel_Share.Reorganize();
-            }
-            _TimetableViewModel = _TimetableViewModel_Share;
+            ViewModel = new TimetableViewModel();
+            await ViewModel.LoadAsync();
             Bindings.Update();
         }
 
@@ -117,13 +109,14 @@ namespace StudentAlpha.Views.SubViews
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var rootFrame = Window.Current.Content as Frame;
-            rootFrame.Navigate(typeof(TimetableDetailPage), e.ClickedItem);
+            ViewModel.ClickedItem = e.ClickedItem as TimetableData;
+            rootFrame.Navigate(typeof(TimetableDetailPage), ViewModel);
         }
 
         private void AddAppBarButton_Click(object sender, RoutedEventArgs e)
         {
             var rootFrame = Window.Current.Content as Frame;
-            rootFrame.Navigate(typeof(TimetableAddPage));
+            rootFrame.Navigate(typeof(TimetableAddPage), ViewModel);
         }
         #endregion
     }

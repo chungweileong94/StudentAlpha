@@ -11,20 +11,11 @@ namespace StudentAlpha.Views.SubViews
 {
     public sealed partial class TimetableAddPage : Page
     {
-        public TimetableViewModel _TimetableViewModel { get; set; }
+        public TimetableViewModel ViewModel { get; set; }
 
         public TimetableAddPage()
         {
             this.InitializeComponent();
-
-            _TimetableViewModel = _TimetableViewModel_Share;
-            _TimetableViewModel.Subject_Input = null;
-            _TimetableViewModel.Lecture_Input = null;
-            _TimetableViewModel.Venue_Input = null;
-            _TimetableViewModel.Day_Input = 0;
-            _TimetableViewModel.StartTime_Input = DateTime.Now.TimeOfDay;
-            _TimetableViewModel.EndTime_Input = DateTime.Now.TimeOfDay;
-            DataContext = _TimetableViewModel;
 
             switch ((int)_LocalSettings.Values[THEME_SETTING])
             {
@@ -44,6 +35,15 @@ namespace StudentAlpha.Views.SubViews
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+
+            ViewModel = e.Parameter as TimetableViewModel;
+            ViewModel.Subject_Input = null;
+            ViewModel.Lecture_Input = null;
+            ViewModel.Venue_Input = null;
+            ViewModel.Day_Input = 0;
+            ViewModel.StartTime_Input = DateTime.Now.TimeOfDay;
+            ViewModel.EndTime_Input = DateTime.Now.TimeOfDay;
+            DataContext = ViewModel;
 
             PreviousPageType = typeof(TimetablePage);
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = Frame.CanGoBack ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
@@ -76,7 +76,7 @@ namespace StudentAlpha.Views.SubViews
 
         private async void CreateAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            var result = await _TimetableViewModel.AddAsync();
+            var result = await ViewModel.AddAsync();
 
             if (result)
             {
