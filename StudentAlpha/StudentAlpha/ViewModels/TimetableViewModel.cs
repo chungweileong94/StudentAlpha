@@ -2,9 +2,7 @@
 using static StudentAlpha.App;
 using StudentAlpha.Services;
 using System;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using StudentAlpha.Models;
 using System.Collections.ObjectModel;
@@ -12,7 +10,7 @@ using Windows.UI.Xaml.Data;
 
 namespace StudentAlpha.ViewModels
 {
-    public class TimetableViewModel : INotifyPropertyChanged
+    public class TimetableViewModel : BaseViewModel
     {
         #region Properties
         public ObservableCollection<TimetableData> Timetable { get; set; }
@@ -105,7 +103,7 @@ namespace StudentAlpha.ViewModels
             try
             {
                 var jsonString = await new FileService().ReadDataFromLocalStorageAsync(TIMETABLE_JSONFILENAME);
-                Timetable = await JsonConvert.DeserializeObjectAsync<ObservableCollection<TimetableData>>(jsonString);
+                Timetable = JsonConvert.DeserializeObject<ObservableCollection<TimetableData>>(jsonString);
 
                 Reorganize();
             }
@@ -131,25 +129,6 @@ namespace StudentAlpha.ViewModels
                 Timetables[(int)c.Day].Add(c);
                 Timetables[(int)c.Day] = new ObservableCollection<TimetableData>(Timetables[(int)c.Day].OrderBy(v => v.StartTime).ToList());
             }
-        }
-        #endregion
-
-        #region INotifyPropertyChanged Helper
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void RaisePropertyChanged([CallerMemberName]string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public bool Set<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)
-        {
-            if (Equals(storage, value))
-            {
-                return false;
-            }
-            storage = value;
-            RaisePropertyChanged(propertyName);
-            return true;
         }
         #endregion
     }

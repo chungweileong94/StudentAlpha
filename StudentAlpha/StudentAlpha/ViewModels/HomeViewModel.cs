@@ -1,21 +1,15 @@
 ﻿using static StudentAlpha.App;
 using StudentAlpha.Models;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using StudentAlpha.Services;
 using Newtonsoft.Json;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml;
-using System.Runtime.CompilerServices;
-using System.ComponentModel;
 
 namespace StudentAlpha.ViewModels
 {
-    public class HomeViewModel : INotifyPropertyChanged
+    public class HomeViewModel : BaseViewModel
     {
         public ObservableCollection<TimetableData> _Timetable { get; set; }
         public ObservableCollection<Assignment> _Assignments { get; set; }
@@ -35,7 +29,7 @@ namespace StudentAlpha.ViewModels
             {
                 _Assignments = new ObservableCollection<Assignment>();
                 var jsonString = await fs.ReadDataFromLocalStorageAsync(ASSIGNMENTS_JSONFILENAME);
-                var temp = await JsonConvert.DeserializeObjectAsync<ObservableCollection<Assignment>>(jsonString);
+                var temp = JsonConvert.DeserializeObject<ObservableCollection<Assignment>>(jsonString);
                 foreach (var a in temp)
                 {
                     if (a.DueDateShortStringFormat == DateTime.Now.ToString("d/M/yyyy"))
@@ -50,7 +44,7 @@ namespace StudentAlpha.ViewModels
             {
                 _Timetable = new ObservableCollection<TimetableData>();
                 var jsonString = await fs.ReadDataFromLocalStorageAsync(TIMETABLE_JSONFILENAME);
-                var temp = await JsonConvert.DeserializeObjectAsync<ObservableCollection<TimetableData>>(jsonString);
+                var temp = JsonConvert.DeserializeObject<ObservableCollection<TimetableData>>(jsonString);
                 foreach (var c in temp)
                 {
                     if (c.Day == DateTime.Now.DayOfWeek)
@@ -62,23 +56,5 @@ namespace StudentAlpha.ViewModels
             }
             catch { }
         }
-
-        #region INotifyPropertyChanged Helper
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void RaisePropertyChanged([CallerMemberName]string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public bool Set<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)
-        {
-            if (Equals(storage, value))
-                return false;
-            storage = value;
-            RaisePropertyChanged(propertyName);
-            return true;
-        }
-        #endregion
     }
 }

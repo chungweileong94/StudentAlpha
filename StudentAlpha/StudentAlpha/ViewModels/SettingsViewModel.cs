@@ -1,12 +1,10 @@
 ﻿using static StudentAlpha.App;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace StudentAlpha.ViewModels
 {
-    public class SettingsViewModel : INotifyPropertyChanged
+    public class SettingsViewModel : BaseViewModel
     {
         #region Properties
         private int _ThemeSetting;
@@ -40,23 +38,5 @@ namespace StudentAlpha.ViewModels
         {
             ThemeSetting = (int)_LocalSettings.Values[THEME_SETTING];
         }
-
-        #region INotifyProperty Helper
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void RaisePropertyChanged([CallerMemberName]string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public bool Set<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)
-        {
-            if (Equals(storage, value))
-                return false;
-            storage = value;
-            RaisePropertyChanged(propertyName);
-            return true;
-        }
-        #endregion
     }
 }

@@ -16,7 +16,7 @@ using System.Windows.Input;
 
 namespace StudentAlpha.ViewModels
 {
-    public class AssignmentsViewModel : INotifyPropertyChanged
+    public class AssignmentsViewModel : BaseViewModel
     {
         #region Properties
         public ObservableCollection<Assignment> Assignments { get; set; }
@@ -114,7 +114,7 @@ namespace StudentAlpha.ViewModels
             try
             {
                 var jsonString = await new FileService().ReadDataFromLocalStorageAsync(ASSIGNMENTS_JSONFILENAME);
-                Assignments = await JsonConvert.DeserializeObjectAsync<ObservableCollection<Assignment>>(jsonString);
+                Assignments = JsonConvert.DeserializeObject<ObservableCollection<Assignment>>(jsonString);
             }
             catch { }
         }
@@ -123,24 +123,6 @@ namespace StudentAlpha.ViewModels
         {
             string jsonString = JsonConvert.SerializeObject(Assignments);
             await new FileService().WriteDataToLocalStorageAsync(ASSIGNMENTS_JSONFILENAME, jsonString);
-        }
-        #endregion
-
-        #region INotifyPropertyChanged Helper
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void RaisePropertyChanged([CallerMemberName]string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public bool Set<T>(ref T storage, T value, [CallerMemberName]string propertyName = null)
-        {
-            if (Equals(storage, value))
-                return false;
-            storage = value;
-            RaisePropertyChanged(propertyName);
-            return true;
         }
         #endregion
     }
