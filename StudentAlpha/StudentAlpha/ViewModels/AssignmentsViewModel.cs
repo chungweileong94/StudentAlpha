@@ -13,13 +13,14 @@ using Newtonsoft.Json;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Data;
 using System.Windows.Input;
+using StudentAlpha.Helpers;
 
 namespace StudentAlpha.ViewModels
 {
     public class AssignmentsViewModel : BaseViewModel
     {
         #region Properties
-        public ObservableCollection<Assignment> Assignments { get; set; }
+        public ObservableRangeCollection<Assignment> Assignments { get; set; }
 
         private Assignment _SelectedAssignment;
         public Assignment SelectedAssignment
@@ -38,7 +39,7 @@ namespace StudentAlpha.ViewModels
 
         public AssignmentsViewModel()
         {
-            Assignments = new ObservableCollection<Assignment>();
+            Assignments = new ObservableRangeCollection<Assignment>();
         }
 
         #region Methods
@@ -114,7 +115,8 @@ namespace StudentAlpha.ViewModels
             try
             {
                 var jsonString = await FileService.ReadDataFromLocalStorageAsync(ASSIGNMENTS_JSONFILENAME);
-                Assignments = JsonConvert.DeserializeObject<ObservableCollection<Assignment>>(jsonString);
+                var temp = JsonConvert.DeserializeObject<List<Assignment>>(jsonString);
+                Assignments.AddRange(temp);
             }
             catch { }
         }
