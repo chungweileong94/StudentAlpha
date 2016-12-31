@@ -7,9 +7,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <Page.DataContext>
-        <models:SettingsViewModel/>
-    </Page.DataContext>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
@@ -43,9 +40,14 @@
             </CommandBar.Content>
         </CommandBar>
 
-        <Pivot Grid.Row="1" Margin="12">
+        <Pivot Grid.Row="1">
+            <Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <ContentPresenter Content="{Binding}" FontWeight="Bold" FontSize="16"/>
+                </DataTemplate>
+            </Pivot.HeaderTemplate>
             <PivotItem Header="General">
-                <ComboBox Header="Theme" SelectedIndex="{x:Bind _SettingsViewModel.ThemeSetting, Mode=TwoWay}">
+                <ComboBox Header="Theme" SelectedIndex="{x:Bind ViewModel.ThemeSetting, Mode=TwoWay}">
                     <ComboBoxItem Content="Default"/>
                     <ComboBoxItem Content="Light"/>
                     <ComboBoxItem Content="Dark"/>
@@ -53,8 +55,8 @@
             </PivotItem>
             <PivotItem Header="About">
                 <StackPanel>
-                    <TextBlock Text="Version" Foreground="{ThemeResource SystemAccentColor}" Style="{ThemeResource TitleTextBlockStyle}"/>
-                    <TextBlock Text="1.1.0.0"/>
+                    <TextBlock Text="{x:Bind ViewModel.AppName}" Style="{ThemeResource TitleTextBlockStyle}"/>
+                    <TextBlock Text="{x:Bind ViewModel.Version}" Style="{ThemeResource BaseTextBlockStyle}" Opacity=".7"/>
                 </StackPanel>
             </PivotItem>
         </Pivot>

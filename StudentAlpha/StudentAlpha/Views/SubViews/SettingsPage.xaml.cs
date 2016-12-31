@@ -18,13 +18,13 @@ namespace StudentAlpha.Views.SubViews
 {
     public sealed partial class SettingsPage : Page
     {
-        public SettingsViewModel _SettingsViewModel { get; set; }
+        public SettingsViewModel ViewModel { get; set; }
 
         public SettingsPage()
         {
             this.InitializeComponent();
 
-            _SettingsViewModel = DataContext as SettingsViewModel;
+            ViewModel = new SettingsViewModel();
         }
     }
 }

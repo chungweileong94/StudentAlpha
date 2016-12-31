@@ -1,12 +1,16 @@
 ﻿using static StudentAlpha.App;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.ApplicationModel;
 
 namespace StudentAlpha.ViewModels
 {
     public class SettingsViewModel : BaseViewModel
     {
         #region Properties
+        public string AppName => Package.Current.DisplayName;
+        public string Version => $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}.{Package.Current.Id.Version.Revision}";
+
         private int _ThemeSetting;
         public int ThemeSetting
         {
