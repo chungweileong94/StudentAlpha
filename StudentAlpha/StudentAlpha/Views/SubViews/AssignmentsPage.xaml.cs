@@ -46,14 +46,14 @@ namespace StudentAlpha.Views.SubViews
         }
 
         #region Events
-        private async void AssignmentListView_ItemClick(object sender, ItemClickEventArgs e)
+        private void AssignmentListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             Compositor _compositor = ElementCompositionPreview.GetElementVisual(DetailGrid).Compositor;
             var visual = ElementCompositionPreview.GetElementVisual(DetailGrid);
 
             if (AssignmentsVisualStateGroup.CurrentState.Name == nameof(SmallWidth_ListView))
             {
-                VisualStateManager.GoToState(this, nameof(SmallWidth_Detail), true);
+                VisualStateManager.GoToState(this, nameof(SmallWidth_Detail), false);
 
                 visual.Opacity = 0;
                 visual.Offset = new Vector3((float)ListViewGrid.ActualWidth, 0, 0);
@@ -119,26 +119,23 @@ namespace StudentAlpha.Views.SubViews
                 VisualStateManager.GoToState(this, nameof(LargeWidth), true);
             }
         }
-
-        private bool registed = false;
-
+        
         private void CommandBarVisualStateGroup_CurrentStateChanged(object sender, VisualStateChangedEventArgs e)
         {
-            if (e.NewState == null) return;
-
             if (e.NewState == SmallWidth_Detail)
             {
-                registed = true;
                 SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
                 SystemNavigationManager.GetForCurrentView().BackRequested -= ((Window.Current.Content as Frame).Content as MainPage).MainFrame_BackRequested;
                 SystemNavigationManager.GetForCurrentView().BackRequested += AssignmentsPage_BackRequested;
+
             }
             else
             {
-                if (!registed) return;
-                registed = false;
-                SystemNavigationManager.GetForCurrentView().BackRequested -= AssignmentsPage_BackRequested;
-                SystemNavigationManager.GetForCurrentView().BackRequested += ((Window.Current.Content as Frame).Content as MainPage).MainFrame_BackRequested;
+                if (e.OldState == SmallWidth_Detail && e.NewState != null)
+                {
+                    SystemNavigationManager.GetForCurrentView().BackRequested -= AssignmentsPage_BackRequested;
+                    SystemNavigationManager.GetForCurrentView().BackRequested += ((Window.Current.Content as Frame).Content as MainPage).MainFrame_BackRequested;
+                }
             }
         }
 
@@ -250,6 +247,7 @@ namespace StudentAlpha.Views.SubViews
             throw new NotImplementedException();
         }
     }
+
     public class StatusToTextConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language) => (bool)value ? "Incomplete" : "Complete";
