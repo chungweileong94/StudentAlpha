@@ -53,51 +53,26 @@ namespace StudentAlpha.Views.SubViews
 
             if (AssignmentsVisualStateGroup.CurrentState.Name == nameof(SmallWidth_ListView))
             {
+                visual.Opacity = 0;
                 VisualStateManager.GoToState(this, nameof(SmallWidth_Detail), false);
 
-                visual.Opacity = 0;
-                visual.Offset = new Vector3((float)ListViewGrid.ActualWidth, 0, 0);
-
                 var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
-                fadeAnimation.Target = "Opacity";
-                fadeAnimation.InsertKeyFrame(1f, 1f);
-                fadeAnimation.Duration = TimeSpan.FromMilliseconds(400);
-                fadeAnimation.DelayTime = TimeSpan.FromMilliseconds(0);
-
-                var offsetAnimation = _compositor.CreateScalarKeyFrameAnimation();
-                offsetAnimation.Target = "Offset.X";
-                offsetAnimation.InsertKeyFrame(1f, 0);
-                offsetAnimation.Duration = TimeSpan.FromMilliseconds(400);
-                offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(0);
-
-                var animationGroup = _compositor.CreateAnimationGroup();
-                animationGroup.Add(fadeAnimation);
-                animationGroup.Add(offsetAnimation);
-
-                visual.StartAnimationGroup(animationGroup);
-            }
-            else
-            {
-                visual.Opacity = 0;
-                visual.Offset = new Vector3((float)ListViewGrid.ActualWidth * 3, 0, 0);
-
-                var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
-                fadeAnimation.Target = "Opacity";
                 fadeAnimation.InsertKeyFrame(1f, 1f);
                 fadeAnimation.Duration = TimeSpan.FromMilliseconds(600);
                 fadeAnimation.DelayTime = TimeSpan.FromMilliseconds(0);
 
-                var offsetAnimation = _compositor.CreateScalarKeyFrameAnimation();
-                offsetAnimation.Target = "Offset.X";
-                offsetAnimation.InsertKeyFrame(1f, (float)ListViewGrid.ActualWidth);
-                offsetAnimation.Duration = TimeSpan.FromMilliseconds(600);
-                offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(0);
+                visual.StartAnimation("Opacity", fadeAnimation);
+            }
+            else
+            {
+                visual.Opacity = 0;
 
-                var animationGroup = _compositor.CreateAnimationGroup();
-                animationGroup.Add(fadeAnimation);
-                animationGroup.Add(offsetAnimation);
+                var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
+                fadeAnimation.InsertKeyFrame(1f, 1f);
+                fadeAnimation.Duration = TimeSpan.FromMilliseconds(600);
+                fadeAnimation.DelayTime = TimeSpan.FromMilliseconds(0);
 
-                visual.StartAnimationGroup(animationGroup);
+                visual.StartAnimation("Opacity", fadeAnimation);
             }
         }
 
@@ -147,28 +122,18 @@ namespace StudentAlpha.Views.SubViews
                 Compositor _compositor = ElementCompositionPreview.GetElementVisual(DetailGrid).Compositor;
                 var visual = ElementCompositionPreview.GetElementVisual(DetailGrid);
 
+                
                 visual.Opacity = 1f;
-                visual.Offset = new Vector3(0, 0, 0);
 
                 var fadeAnimation = _compositor.CreateScalarKeyFrameAnimation();
-                fadeAnimation.Target = "Opacity";
                 fadeAnimation.InsertKeyFrame(1f, 0);
                 fadeAnimation.Duration = TimeSpan.FromMilliseconds(400);
                 fadeAnimation.DelayTime = TimeSpan.FromMilliseconds(0);
 
-                var offsetAnimation = _compositor.CreateScalarKeyFrameAnimation();
-                offsetAnimation.Target = "Offset.X";
-                offsetAnimation.InsertKeyFrame(1f, (float)ListViewGrid.ActualWidth);
-                offsetAnimation.Duration = TimeSpan.FromMilliseconds(400);
-                offsetAnimation.DelayTime = TimeSpan.FromMilliseconds(0);
-
-                var animationGroup = _compositor.CreateAnimationGroup();
-                animationGroup.Add(fadeAnimation);
-                animationGroup.Add(offsetAnimation);
-
-                visual.StartAnimationGroup(animationGroup);
-
+                visual.StartAnimation("Opacity", fadeAnimation);
+                
                 await Task.Delay(400);
+
                 VisualStateManager.GoToState(this, nameof(SmallWidth_ListView), false);
                 ViewModel.SelectedAssignment = null;
             }
